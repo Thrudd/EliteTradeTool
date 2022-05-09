@@ -1,0 +1,17 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+ <div id="ContentContainer" style="min-height:400px">
+    <h1 class="text-danger">Error</h1>
+    <p>Sorry commander, an error occurred while processing your request. Click back in the browser and try again. If the problem persists contact <span id="Mail"></span></p>
+</div>
+@section scripts{
+<script>
+    $(document).ready(function () {
+        var address = "thrudd&#64;" + "elitetradingtool.co.uk";
+        $("#Mail").html(address);
+    });
+</script>    
+}

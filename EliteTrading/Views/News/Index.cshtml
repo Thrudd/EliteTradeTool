@@ -1,0 +1,52 @@
+﻿@model EliteTrading.Entities.News
+
+@{
+    ViewBag.Title = "News";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="ContentContainer">
+    <h2>Notification</h2>
+
+    @using (Html.BeginForm("Index", "News", FormMethod.Post, new { @class = "form-horizontal" })) {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ShowFrom, "Show From", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.ShowFrom, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ShowFrom, "", new { style = "display:none" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ShowTo, "Show To", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.ShowTo, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ShowTo, "", new { style = "display:none" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Message, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Message, new { @class = "form-control", style = "width:450px;max-width:900px;height:450px" })
+                @Html.ValidationMessageFor(model => model.Message, "", new { style = "display:none" })
+            </div>
+        </div>
+        if (ViewBag.Result != null) {
+            <div class="col-md-offset-2 text-success">@ViewBag.Result</div>
+        }
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+                @Html.ActionLink("Remove News", "Clear", "Notification", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    }
+</div>
+    @section scripts{
+        @Scripts.Render("~/bundles/jqueryval")
+    }

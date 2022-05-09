@@ -1,0 +1,81 @@
+﻿@model EliteTrading.Models.Search.StationDetailViewModel
+@using EliteTrading.Extensions
+@{
+    ViewBag.Title = "Details for " + @Model.Station.Name;
+    Layout = ViewBag.Layout;
+}
+@if (ViewBag.Layout != null) { 
+@:<div style="background-color:#000;padding:10px">
+} 
+
+    <hr />
+    <h3 style="margin-left:5px">@Model.Station.Name (@Model.Station.System.Name - @Model.Station.Allegiance.Name @Model.Station.EconomyString @Model.Station.Government.Name)</h3>
+    @if(Model.Station.FactionName.Length > 0){<h4 style="margin-left:5px">@Model.Station.FactionName</h4>}
+    <p style="margin-left:5px">
+        <strong>Services:</strong> @Model.Station.Services<br />
+        <strong>Installation Type:</strong> @Model.Station.StationType.Name<br />
+        <strong>Landing Pads:</strong> @Model.Station.StationType.Pads<br />
+        @if (Model.Station.DistanceFromJumpIn > 0) {
+            @:<strong>Distance from arrival point:</strong> @(Model.Station.DistanceFromJumpIn) ls
+    }
+    </p>
+    @if (ViewBag.Layout == null) { 
+    @:<a href="javascript:ShowResults()" class="btn btn-default" style="margin-left:5px">Back to results</a>
+    }
+
+
+    @if (Model.Station.HasMarket) {
+        <table class="table table-striped">
+            @foreach (EliteTrading.Models.Search.CommodityCategory commodity in Model.StationCommodities.Category) {
+                if (commodity.StationCommodity.Any()) {
+                    <thead>
+                        <tr>
+                            <th style="padding-top:40px;">@(commodity.Name)</th>
+                            <th style="padding-top:40px;">Sell</th>
+                            <th style="padding-top:40px;">Buy</th>
+                            <th style="padding-top:40px;">Avg</th>
+                            <th style="padding-top:40px;">Last Update</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (EliteTrading.Entities.StationCommodity item in commodity.StationCommodity) {
+
+                            <tr>
+                                <td style="padding-left:20px">@Html.DisplayFor(modelItem => item.Commodity.Name)</td>
+                                <td>
+                                    @if (item.Sell > 0) {
+                                        @(item.Sell)
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Buy > 0) {
+                                        @(item.Buy)
+                                    }
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.Commodity.GalacticAveragePrice)</td>
+                                <td>
+                                    @(item.LastUpdate.TimeSince())
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+            }
+        </table>
+        if (ViewBag.Layout == null) {
+        @:<a href="javascript:ShowResults()" class="btn btn-default" style="margin-left:5px;margin-bottom:5px;">Back to results</a>
+        }
+    }
+@if (ViewBag.Layout != null) {
+@:</div>
+}
+
+<script>
+    $(document).ready(function () {
+        @if (User.Identity.IsAuthenticated) {
+            if (Model.RepResult.RankUp) {
+               @: NewRankAchieved("@(Model.RepResult.Title)", "@(Model.RepResult.Badge)");
+            }
+        }
+    });
+</script>

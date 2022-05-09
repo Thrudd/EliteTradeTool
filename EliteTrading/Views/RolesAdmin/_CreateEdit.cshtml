@@ -1,0 +1,33 @@
+﻿@model EliteTrading.Models.ViewModels.RoleViewModel
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Rank, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(model => model.Rank, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Rank)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.RepRequired, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(model => model.RepRequired, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.RepRequired)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Badge, new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.TextBoxFor(model => model.Badge, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Badge)
+    </div>
+</div>

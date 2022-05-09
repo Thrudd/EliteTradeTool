@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "Missing Stations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="AdminHeader">
+    <p>This page lists stations that were submitted via the EDDN network but were not in the database so no update was recorded.</p>
+    <p>Put in your current system and select the range and you'll get a list of any missing stations that we know of that are within range. You can then add them using the @Html.ActionLink("Admin Page", "Index")</p>
+
+    <form class="form-horizontal" id="MissingStationForm" action="javascript:void(0);">
+        <div class="form-group">
+            @Html.Label("CurrentLocation", "Current Location", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("CurrentLocation", null, new { id = "CurrentLocation", @class = "form-control typeahead systemList", placeholder = "Current Location", data_link = "LastSystemName", required = "required" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("SearchRange", "Search Range Box", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <label>
+                    @Html.RadioButton("SearchRange", 50, true, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">50 ly</span>
+                </label>
+                <label>
+                    @Html.RadioButton("SearchRange", 150, true, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">150 ly</span>
+                </label>
+                <label>
+                    @Html.RadioButton("SearchRange", 300, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">300 ly</span>
+                </label>
+                <label>
+                    @Html.RadioButton("SearchRange", 600, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">600 ly</span>
+                </label>
+            </div>
+        </div>
+
+        <button type="submit" id="SearchBtn" class="btn btn-default col-md-offset-2"><i class="fa fa-search"></i> Search</button> <span id="MissingStationSpinner" class="hidden"> <img src="~/Content/images/ajax-loader.gif" /> Searching</span>
+    </form>
+</div>
+
+<div id="AdminContentContainer">
+    <div id="MissingStationListing" class="hidden"></div>
+</div>
+
+
+    <script id="MissingStationListingTemplate" type="text/x-jsrender">
+        <hr style="margin-top:10px;" />
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped" id="MissingStationTable">
+                    <thead>
+                        <tr>
+                            <th class="sortable">Distance</th>
+                            <th class="sortable">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {^{for Results}}
+                        <tr id="Row{{:#index}}" class="resultRow">
+                            <td>{{:Distance}}</td>
+                            <td class="profit">{{:Message}}</td>
+                        </tr>
+                        {{/for}}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </script>
+
+    @section scripts{
+        @Scripts.Render("~/bundles/jqueryval")
+        <script>
+
+            $(document).ready(function () {
+                SetUpMissingStations();
+            });
+        </script>
+    }

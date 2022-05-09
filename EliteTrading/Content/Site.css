@@ -1,0 +1,625 @@
+﻿body {
+    padding-top: 70px;
+    padding-bottom: 20px;
+    letter-spacing:0.05em;
+}
+
+footer{
+    margin-top:100px;
+    text-align:center;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    position:relative;
+    z-index: 1000;
+}
+
+
+h2{
+    margin-top:0px;
+    padding-bottom:10px;
+    border-bottom: 1px solid #EF4023;
+    font-family:teko;
+    font-weight:normal;
+    font-size:28pt;
+}
+
+
+@media (max-width: 767px) {
+    #PageGraphic{
+        display:none;
+    }
+
+    #Logo {
+        display:none;
+    }
+}
+
+@media (min-width: 767px) {
+    #PageGraphic{
+        z-index: 100;
+        position: absolute;
+        width:100%;
+        height:520px;
+        top:51px;
+        background-image:url('/Content/images/Elite-Dangerous1.jpg');
+        background-repeat:no-repeat;
+    }
+
+    #Logo {
+        margin-bottom:20px;
+    }
+
+    .navbar-brand{display:none;}
+}
+
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.logWrapper{
+    width:100%;
+    height:2800px;
+    margin-top:10px;
+}
+
+.logWrapper iframe {
+    width: 100%;
+    Height: 100%;
+}
+
+.orange {
+    color:#F58400;
+}
+
+.inline{
+    display:inline-block;
+}
+
+.updated {
+    border-color: #3c763d;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+.text-success{color: #3c763d !important;}
+.updateRow a{
+    color:#fff;
+}
+
+.updateInfo, .updateInfo:hover{
+    text-decoration:none;
+    color:#fff;
+}
+
+.dummyRow{
+    display:none;
+}
+
+.routeRow {
+    border-top:none !important;
+}
+
+#Instructions{
+    padding-top:10px;
+    margin-bottom:10px;
+    color:#fff;
+    clear:both;
+}
+
+#Notice {
+    background-color:#EF4023;
+    padding-top:10px;
+    margin-bottom:10px;
+    color:#fff;
+    clear:both;
+}
+
+legend{color:#EF4023}
+
+#NavTabs {
+    background-color:#000;
+    padding:10px;
+}
+
+#ContentContainer {
+    margin-top:10px;
+    background-color:#000;
+    padding:10px;
+}
+
+a.clearBtn {
+    position:absolute;
+    top: 5px;
+    left: 300px;
+    height:16px;
+    width:14px;
+    display:inline-block;
+    z-index:10000;
+}
+@media only screen and (max-width: 767px)  {
+    #CalcBtns{
+         margin-left:10px;
+    }
+}
+@media only screen and (min-width: 768px)  {
+    #CalcBtns{
+         float:right;
+         margin-right:10px;
+    }
+}
+
+
+#CalcListing, #DataListing, #RoutePlanner, #SearchStationData, #RouteListing, #SearchListing {
+    margin-top: 10px;
+    /*-webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: 1px solid #cccccc;*/
+}
+
+#CalcListing h3, #DataListing h3, #RoutePlanner h3, #CalcListing h4, #DataListing h4, #RoutePlanner h4, #RouteListing h3{
+    margin-left:5px
+}
+
+#CalcListing .stationCommodityCell span{
+    white-space:nowrap;
+    margin-right:10px;
+}
+
+.iconColumn{
+    width:34px;
+    float:left;
+    background-color:#000;
+    border: 1px solid #989898;
+    padding: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.iconBlock{
+    display:inline-block;
+    margin-right:10px;
+    background-color:#000;
+    border: 1px solid #989898;
+    padding: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.stationInfoColumn{
+    margin-left:44px;
+}
+
+th.header.sortable {
+    cursor:pointer;
+}
+
+th.header.sortable:hover {
+    color:#F58400;
+}
+
+#Badge{
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    border: 1px solid #EF4023;
+    float:left;
+}
+
+#ReputationReadout{
+    margin-left:134px;
+}
+
+#ReputationReadout ul{
+    padding-left:18px
+}
+
+
+
+#SearchResultTable .fa-check{
+    color:#093;
+}
+
+#SearchResultTable .fa-times{
+    color:#C00;
+}
+
+ul{
+    padding-left:18px;
+}
+li{
+    color:#FF3B00;
+    
+}
+
+li span{
+    color:#ffffff;
+}
+
+/* floatThead */
+table.floatThead-table {
+    border-top: none;
+    border-bottom: none;
+    background-color: #000;
+}
+
+
+
+/* Twitter Typeahead*/
+.tt-dropdown-menu {
+  max-width: 280px;
+  overflow-y: auto;
+}
+/*
+span.twitter-typeahead .tt-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  list-style: none;
+  font-size: 14px;
+  text-align: left;
+  background-color: grey;
+  border: 1px solid #545454;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background-clip: padding-box;
+}
+span.twitter-typeahead .tt-suggestion > p {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #fff;
+  white-space: nowrap;
+}
+span.twitter-typeahead .tt-suggestion > p:hover,
+span.twitter-typeahead .tt-suggestion > p:focus {
+  color: #ffffff;
+  text-decoration: none;
+  outline: 0;
+  background-color: #545454;
+}
+span.twitter-typeahead .tt-suggestion.tt-cursor {
+  color: #ffffff;
+  background-color: #545454;
+}
+span.twitter-typeahead {
+  width: 100%;
+}
+.input-group span.twitter-typeahead {
+  display: block !important;
+}
+.input-group span.twitter-typeahead .tt-dropdown-menu {
+  top: 32px !important;
+}
+.input-group.input-group-lg span.twitter-typeahead .tt-dropdown-menu {
+  top: 44px !important;
+}
+.input-group.input-group-sm span.twitter-typeahead .tt-dropdown-menu {
+  top: 28px !important;
+}*/
+
+
+
+/* System Editor */
+#SystemList tbody td{
+    cursor:pointer;
+}
+
+#SystemList tbody tr:hover {
+    font-weight:bold;
+}
+
+/* highlight results */
+.ui-autocomplete span.hl_results {
+    background-color: #ffff66;
+}
+ 
+/* loading - the AJAX indicator */
+.ui-autocomplete-loading {
+    background: white url('/Content/images/ajax-loader.gif') right center no-repeat;
+}
+ 
+/* scroll results */
+.ui-autocomplete {
+    max-height: 250px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+    /* add padding for vertical scrollbar */
+    padding-right: 5px;
+}
+ 
+.ui-autocomplete li {
+    font-size: 16px;
+}
+ 
+/* IE 6 doesn't support max-height
+* we use height instead, but this forces the menu to always be this tall
+*/
+* html .ui-autocomplete {
+    height: 250px;
+}
+
+/* Contact Form */
+#ContactForm textarea{
+    width:318px;
+    max-width:318px;
+    height:250px;
+}
+
+#ContactForm input[type="text"], #ContactForm input[type="email"]{
+    width:318px;
+    max-width:318px;
+}
+
+/* Rare Trades */
+#RareTrades {
+    min-height:300px;
+}
+
+
+/* Top Contributers */
+.miniBadge {
+    height: 40px;
+    width: 40px;
+    background-color:#fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    float:left;
+    margin-right:10px
+}
+
+#News h3, #FAQ h3{
+    margin-top:0px;
+    color:#EF4023;
+}
+
+
+/* Notification */
+#Notification{
+    margin-bottom:10px;
+    position:relative;
+    background-color:#000;
+    padding:10px;
+}
+
+#Notification h3{
+    font-size:12pt;
+    color:#EF4023;
+    margin:0px;
+    display:inline-block;
+}
+
+#Notification .close{
+    position:absolute;
+    top:12px;
+    right:10px;
+    font-size:12pt;
+    color:#fff;
+    opacity:1
+}
+#Notification .close:hover{
+    color:#fff;
+    text-decoration:none;
+}
+
+
+/**/
+
+#StationTable .filters, #SystemTable .filters {
+    display:none;
+}
+
+
+
+/* Combined Admin Page */
+#AdminHeader{
+    background-color:#000;
+    padding:10px;
+}
+
+#AdminHeader .form-group{
+    margin-bottom:0px;
+}
+
+#AdminContentContainer, #Import {
+    margin-top:10px;
+    background-color:#000;
+    padding:10px;
+    min-height:300px;
+}
+
+#AdminContentContainer #System .fa-pencil, #AdminContentContainer #Stations .fa-pencil, #AdminContentContainer #Stations .fa-trash  {
+    font-size:12pt;
+    position:relative;
+    top:-2px;
+    margin-left:10px;
+}
+
+
+#AdminContentContainer a:hover{
+    text-decoration:none;
+}
+
+.adminServices {
+    padding:0px;
+    display:inline;
+}
+
+.adminServices li{
+    display:inline;
+}
+
+.adminServices li:not(:first-child):before{
+    content:", ";
+}
+
+
+
+.demandSupply {
+    font-size:8pt;
+    display:inline-block
+}
+
+.demandSupply div {
+    display:inline-block;
+}
+
+.demandSupply label{
+    text-align: center;
+    margin:0px;
+}
+
+.demandSupply input[type=radio]{
+    margin:0px;
+}
+
+.btnColumn{
+    min-width:200px;
+    width:200px;
+    text-align:right;
+}
+
+@media (max-width: 991px) {
+    .demandSupply{
+        display:none;
+    }
+
+    .demandSupplyList{
+        display:inline-block;
+    }
+
+    .btnLabel {
+        display: none;
+    }
+
+    .btnColumn{
+        width:90px;
+        min-width:90px;
+    }
+}
+
+@media (min-width: 992px) {
+    .demandSupply{
+        display:inline-block;
+    }
+
+    .demandSupplyList{
+        display:none;
+    }
+}
+
+/* Import */
+.importInput{width:100px;}
+.importBtn{width:60px;}
+
+
+/* 
+    *********************************************************
+    Bootstrap Overides
+    *********************************************************
+*/
+.navbar-fixed-top{
+    border-bottom: 1px solid rgba(42, 42, 42, 0.8);
+}
+
+hr {
+    margin-top: 0px;
+}
+.popover {
+    background-color:#212121;
+    border: 1px solid #EF4023;
+}
+.popover.right > .arrow:after {
+    border-right-color:#EF4023; 
+}
+.popover.bottom > .arrow:after{
+    border-bottom-color:#EF4023; 
+}
+/* 
+    *********************************************************
+    Fonts
+    *********************************************************
+*/
+
+@font-face {
+    font-family: 'teko';
+    src: url('/Content/fonts/teko-bold-webfont.eot');
+    src: url('/Content/fonts/teko-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/Content/fonts/teko-bold-webfont.woff') format('woff'),
+         url('/Content/fonts/teko-bold-webfont.ttf') format('truetype'),
+         url('/Content/fonts/teko-bold-webfont.svg#tekobold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'teko';
+    src: url('/Content/fonts/teko-regular-webfont.eot');
+    src: url('/Content/fonts/teko-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/Content/fonts/teko-regular-webfont.woff') format('woff'),
+         url('/Content/fonts/teko-regular-webfont.ttf') format('truetype'),
+         url('/Content/fonts/teko-regular-webfont.svg#teko_regularregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'lato';
+    src: url('/Content/fonts/lato-regular-webfont.eot');
+    src: url('/Content/fonts/lato-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/Content/fonts/lato-regular-webfont.woff') format('woff'),
+         url('/Content/fonts/lato-regular-webfont.ttf') format('truetype'),
+         url('/Content/fonts/lato-regular-webfont.svg#latoregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'lato';
+    src: url('/Content/fonts/lato-italic-webfont.eot');
+    src: url('/Content/fonts/lato-italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/Content/fonts/lato-italic-webfont.woff') format('woff'),
+         url('/Content/fonts/lato-italic-webfont.ttf') format('truetype'),
+         url('/Content/fonts/lato-italic-webfont.svg#latoitalic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+
+@font-face {
+    font-family: 'lato';
+    src: url('/Content/fonts/lato-bold-webfont.eot');
+    src: url('/Content/fonts/lato-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/Content/fonts/lato-bold-webfont.woff') format('woff'),
+         url('/Content/fonts/lato-bold-webfont.ttf') format('truetype'),
+         url('/Content/fonts/lato-bold-webfont.svg#latobold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+
+}

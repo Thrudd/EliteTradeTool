@@ -1,0 +1,59 @@
+﻿@model EliteTrading.Models.ViewModels.RareTradesQueryViewModel
+@using EliteTrading.Extensions
+@using EliteTrading.Models.ViewModels
+@{
+    ViewBag.Title = "Rare Trades";
+    Layout = ViewBag.Layout;
+}
+<hr />
+<p>Rare trades are low quantity goods found at specific stations within the game world whose sale value rises the further from the purchase location you take them.<br />They're best sold 130-160 ly from their origin for best profit.</p>
+<p>If you find a rare trade item thats missing from the list please let me know the name, location, price and distance from station via the <a href="/Contact">contact form</a></p>
+<form class="form-horizontal" id="RareTradesForm" action="javascript:void(0);">
+    <div class="form-group">
+        @Html.Label("Current Location", "Location", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("Location", null, new { id = "CurrentLocation", @class = "form-control typeahead systemList", placeholder = "Current Location", data_link = "LastSystemName", required = "required" })
+        </div>
+    </div>
+    <button type="submit" id="SearchBtn" class="btn btn-default col-md-offset-2"><i class="fa fa-random"></i> Show Table</button>
+
+</form>
+
+<div id="RareTradesListing"></div>
+
+
+<script>
+    $(document).ready(function () {
+        SetUpRareTrades();
+    });
+</script>
+
+<script id="RareTradesTemplate" type="text/x-jsrender">
+    <hr style="margin-top:10px;" />
+    <table class="table table-striped" id="RareTradesTable">
+        <thead>
+            <tr>
+                <th class="sortable">Trade Item</th>
+                <th class="sortable">Price</th>
+                <th class="sortable">Distance (ly)</th>
+                <th class="sortable">Location</th>
+                <th class="sortable">Distance From Jump In (ls)</th>
+                <th class="sortable">Allegiance</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{for RareTrades}}
+            <tr>
+                <td>{{:RareTrade}}</td>
+                <td>{{if Price > 0}}{{:Price}}{{/if}}</td>
+                <td>{{:Distance}}</td>
+                <td>{{:Location}}</td>
+                <td>{{if DistanceFromJumpIn > 1}}{{:DistanceFromJumpIn}}{{/if}}</td>
+                <td>{{:Allegiance}}</td>
+            </tr>
+            {{/for}}
+        </tbody>
+
+    </table>
+</script>

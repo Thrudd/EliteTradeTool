@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Route Planner";
+    Layout = ViewBag.Layout;
+}
+
+<p>Enter two system names to plot a route between them. Uses data from <a href="http://www.edstarcoordinator.com" target="_blank">www.edstarcoordinator.com</a></p>
+
+<div class="form-horizontal" id="RoutePlannerForm">
+    <div class="form-group">
+        @Html.Label("StartSystem", "Start System", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("StartSystem", null, new { id = "StartSystem", @class = "form-control typeahead systemList", placeholder = "Start System Name", required = true })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("DestinationSystem", "End System", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("DestinationSystem", null, new { id = "DestinationSystem", @class = "form-control typeahead systemList", placeholder = "End System Name", required = true })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("JumpRange", "Jump Range", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("JumpRange", null, new { @class = "form-control floatOnly jumpRange", style = "display:inline-block;width:120px", oninput = "maxLengthCheck(this)", maxlength = "5", min = "0", max = "50", data_link="JumpRange" })
+        </div>
+    </div>
+
+    <a href="javascript:FindRouteQuery()" class="btn btn-default col-md-offset-2"><i class="fa fa-paper-plane"></i> Plot Route</a> <a href="javascript:ReverseFindRouteQuery()" class="btn btn-default"><i class="fa fa-refresh"></i> Reverse Route</a>
+</div>
+
+
+
+<div id="RouteListing" class="hidden"></div>
+
+
+<script>
+    $(document).ready(function () {
+        RoutePlannerApplyTypeahead();
+    });
+</script>

@@ -1,0 +1,24 @@
+﻿@model List<EliteTrading.Models.ViewModels.CommodityListingItem>
+<hr />
+<h3>Where to buy @ViewBag.Name</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Location</th>
+            <th>Buy Price</th>
+            <th>Avg</th>
+            <th>Last Update</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.StationName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Buy)</td>
+                <td>@Html.DisplayFor(modelItem => item.AveragePrice)</td>
+                <td><a title="Updated by CMDR @item.UpdatedBy" class="updateInfo">@Html.DisplayFor(modelItem => item.LastUpdate)</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

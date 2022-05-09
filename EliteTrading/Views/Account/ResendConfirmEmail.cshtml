@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "Resend Email Confirmation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="ContentContainer">
+    <h2>@ViewBag.Title.</h2>
+    <p>Your account exists but you have not confirmed your email address so we can't send you a password reset. Please check your email inbox for your confirmation message and click the link provided to confirm your account.</p>
+    <p>If you are unable to find it please <a href="/Account/ResendConfirmEmail?emailAddress=@ViewBag.UserId">click here</a> to send a new one.</p>
+</div>

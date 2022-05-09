@@ -1,0 +1,389 @@
+﻿
+@{
+    ViewBag.Title = "Thrudds Elite:Dangerous Tools";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div id="AdminHeader">
+    <p>Start by typing in the system or station name you'd like to edit. A selection list should appear with suggestions, click on the name when you see it to load the data for that item.</p>
+    <p>Only click add new system if the system doesn't appear in the select list when you type.</p>
+    <div class="form-inline">
+        <div class="form-group">
+            @Html.Label("Selector", "System/Station:", new { @class = "control-label" })
+            <div class="form-group">
+                <input type="text" id="Selector" class="form-control" placeholder="System or Station Name" style="max-width:350px;width:350px;" />
+            </div>
+            @if (User.IsInRole("Master")) {
+                <div class="form-group">
+                    <a href="javascript:ShowSystemEditor(0)" class="btn btn-default"><i class="fa fa-plus"></i> Add System</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div id="AdminContentContainer">
+    <div id="System"></div>
+    <div id="Stations"></div>
+    <div id="StationCommodities" style="margin-bottom:100px;"></div>
+</div>
+  
+<!-- Displays the system information -->
+<script id="systemTemplate" type="text/x-jsrender">
+    <div>
+        <h2>{{:Name}} - <span style="font-size:smaller">{{:AllegianceName}} {{:GovernmentName}} {{:Economy}} System {{if PermitRequired}}(Permit Required){{/if}}</span>
+@if (User.IsInRole("Master")) {
+        <a href="javascript:ShowSystemEditor({{:Id}})"><i class="fa fa-pencil"></i></a>
+}
+        </h2>
+    </div>
+</script>
+
+<!-- Renders an editor for a system -->
+<script id="systemEditTemplate" type="text/x-jsrender">
+    <form id="SystemEditor" action="javascript:void(0);" class="form-inline" style="margin-bottom:20px;">
+        <input type="hidden" id="SystemId" />
+        <input type="hidden" id="X" value="{{:System.X}}" />
+        <input type="hidden" id="Y" value="{{:System.Y}}" />
+        <input type="hidden" id="Z" value="{{:System.Z}}" />
+        <div class="form-group">
+            <label class="sr-only" for="SystemName">System Name</label>
+            <input type="text" class="form-control" id="SystemName" name="SystemName" placeholder="System Name" value="{{:System.Name}}" required style="width:200px">
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="AllegianceId">Allegiance</label>
+            <select id="AllegianceId" name="AllegianceId" data-link="AllegianceId" class="form-control" required>
+                <option value="">- Allegiance -</option>
+                {^{for Allegiances}}
+                <option value="{{:Value}}">{{:Text}}</option>
+                {{/for}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="sr-only" for="GovernmentId">Government</label>
+            <select id="GovernmentId" name="GovernmentId" data-link="GovernmentId" class="form-control" required>
+                <option value="">- Government -</option>
+                {^{for Governments}}
+                <option value="{{:Value}}">{{:Text}}</option>
+                {{/for}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="checkbox-inline">
+                <input type="checkbox" id="PermitRequired" name="PermitRequired" value="PermitRequired" {{if System.PermitRequired}} checked{{/if}}> Permit Required
+            </label>
+        </div>
+        <button type="submit" class="btn btn-default" id="SaveSystemBtn">Save</button> <a href="javascript:HideSystemEditor({{:System.Id}})">Cancel</a>
+    </form>
+    <div id="SystemNotFoundMessage" class="hidden">System not found in EDStarCoordinator please check your spelling and if correct then <a href="http://edstarcoordinator.com/" target="_blank">click here</a> and enter location values.</div>
+    <hr />
+</script>
+
+<!-- Displays a single station -->
+<script id="stationTemplate" type="text/x-jsrender">
+    <div class="stationDisplay">
+        <h3 style="margin-bottom:0px;">
+            {{:Name}}
+            {{if FactionName}}
+            ({{:FactionName}}) 
+            {{/if}}
+            {{if StationTypeName}}
+             - {{:StationTypeName}}
+            {{/if}}
+            
+            @if (User.IsInRole("Master")) {
+                <a href="javascript:ShowStationEditor({{:SystemId}},{{:Id}})"><i class="fa fa-pencil"></i></a>
+            }
+            @if (User.IsInRole("Elite")) {
+                <a href="javascript:DeleteStation({{:Id}},{{:SystemId}})" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i></a>
+            }
+        </h3>
+
+        <p style="margin:0px;">Economy: {{:Economy}}</p>
+        <div style="margin:0px;">
+            Services:
+            {{if HasMarket || HasBlackmarket || HasOutfitting || HasShipyard || HasRepairs || HasRefuel || HasRearm}}
+            <ul class="adminServices">
+                {{if HasMarket }}
+                <li>Commodities</li>
+                {{/if}}
+                {{if HasBlackmarket }}
+                <li>Blackmarket</li>
+                {{/if}}
+                {{if HasOutfitting }}
+                <li>Outfitting</li>
+                {{/if}}
+                {{if HasShipyard }}
+                <li>Shipyard</li>
+                {{/if}}
+                {{if HasRepairs }}
+                <li>Repairs</li>
+                {{/if}}
+                {{if HasRefuel }}
+                <li>Refuel</li>
+                {{/if}}
+                {{if HasRearm }}
+                <li>Rearm</li>
+                {{/if}}
+            </ul>
+            {{else}}
+            None
+            {{/if}}
+        </div>
+
+        <p>
+            Distance from arrival point
+            {{if DistanceFromJumpIn}}
+            : {{:DistanceFromJumpIn}} ls
+            {{else}}
+            not set.
+            {{/if}}
+        </p>
+
+        {{if HasMarket}}
+        <a href="javascript:GetStationCommodities({{:Id}})" class="btn btn-default"><i class="fa fa-cubes"></i> Show Commodities</a>
+        {{/if}}
+    </div>
+</script>
+
+<!-- Renders an editor for a single station -->
+<script id="stationEditorTemplate" type="text/x-jsrender">
+    <p>Everything you need to know to fill in this form is in the the system view or left hand panel when you're docked at the station.<br />
+        The system view will have the government &amp; economy and distance from arrival point details.<br />
+        The the station type (Coriolis, Orbis, Ocellus, Outpost, etc.) can be found on the "Contacts" tab and select the new station from the list.<br />
+        Please also take a moment to check that the system details above are set correctly.</p>
+    <form id="Station{{:Station.Id}}Editor" action="javascript:void(0);" style="margin-bottom:20px;" class="stationForm">
+        <input type="hidden" id="StationId" value="{{:Station.Id}}" />
+        <input type="hidden" id="SystemId" value="{{:Station.SystemId}}" />
+
+
+        <div class="form-inline">
+            <div class="form-group">
+                <label class="sr-only" for="StationName">Station Name</label>
+                <input type="text" class="form-control" id="StationName" name="StationName" placeholder="Station Name" value="{{:Station.Name}}" style="width:300px" maxlength="60" required>
+            </div>
+
+            <div class="form-group">
+                <label class="sr-only" for="FactionName">Faction Name</label>
+                <input type="text" class="form-control" id="FactionName" name="FactionName" placeholder="Faction Name" value="{{:Station.FactionName}}" style="width:300px" maxlength="100" required>
+            </div>
+
+            <div class="form-group">
+                <label class="sr-only" for="StationTypeId">Station Type</label>
+                <select id="StationTypeId" data-link="StationTypeId" name="StationTypeId" class="form-control" required>
+                    <option value="">- Select Type -</option>
+                    {^{for StationTypes}}
+                    <option value="{{:Value}}">{{:Text}}</option>
+                    {{/for}}
+                </select>
+            </div>
+        </div>
+        <div class="form-inline" style="margin-top:10px">
+            <div class="form-group">
+                <label class="sr-only" for="AllegianceId">Allegiance</label>
+                <select id="AllegianceId" name="AllegianceId" data-link="AllegianceId" class="form-control" required>
+                    <option value="">- Allegiance -</option>
+                    {^{for Allegiances}}
+                    <option value="{{:Value}}">{{:Text}}</option>
+                    {{/for}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="GovernmentId">Government</label>
+                <select id="GovernmentId" name="GovernmentId" data-link="GovernmentId" class="form-control" required>
+                    <option value="">- Government -</option>
+                    {^{for Governments}}
+                    <option value="{{:Value}}">{{:Text}}</option>
+                    {{/for}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="EconomyId">First Economy</label>
+                <select id="EconomyId" name="EconomyId" data-link="EconomyId" class="form-control" required>
+                    <option value="">- Economy -</option>
+                    {^{for Economies}}
+                    <option value="{{:Value}}">{{:Text}}</option>
+                    {{/for}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="sr-only" for="SecondaryEconomyId">Second Economy</label>
+                <select id="SecondaryEconomyId" name="SecondaryEconomyId" data-link="SecondaryEconomyId" class="form-control" required>
+                    <option value="0">- Economy (Optional) -</option>
+                    {^{for Economies}}
+                    <option value="{{:Value}}">{{:Text}}</option>
+                    {{/for}}
+                </select>
+            </div>
+        </div>
+        <div class="form-group" style="margin:10px 0px;">
+            <label>Services:</label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="HasBlackmarket" name="HasBlackmarket" value="HasBlackmarket" {{if Station.HasBlackmarket}}checked{{/if}}> Blackmarket
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="HasMarket" name="HasMarket" value="HasMarket" {{if Station.HasMarket}}checked{{/if}}> Commodities
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="HasOutfitting" name="HasOutfitting" value="HasOutfitting"{{if Station.HasOutfitting}}checked{{/if}}> Outfitting
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="HasShipyard" name="HasShipyard" value="HasShipyard"{{if Station.HasShipyard}}checked{{/if}}> Shipyard
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="HasRepairs" name="HasRepairs" value="HasRepairs"{{if Station.HasRepairs}}checked{{/if}}> Repairs
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="HasRefuel" name="HasRefuel" value="HasRepairs" {{if Station.HasRefuel}}checked{{/if}}> Refuel
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="HasRearm" name="HasRearm" value="HasRepairs" {{if Station.HasRearm}}checked{{/if}}> Rearm
+            </label>
+        </div>
+
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="DistanceFromJumpIn">Distance from arrival point (in ls): </label>
+                <input type="number" class="form-control floatOnly" id="DistanceFromJumpIn" name="DistanceFromJumpIn" placeholder="Distance" value="{{if Station.DistanceFromJumpIn > 0}}{{:Station.DistanceFromJumpIn}}{{/if}}">
+            </div>
+        </div>
+
+        {{if Station.Id == 0}}
+        <div class="form-inline hidden" id="CopyMarketFromStation">
+            <div class="form-group" style="margin-top:10px">
+                <label for="CopyMarketFromStationId">Copy Commodities From: </label>
+                <select id="CopyMarketFromStationId" data-link="CopyMarketFromStationId" name="CopyMarketFromStationId" class="form-control" required>
+                    <option value="0">None</option>
+                    {^{for StationsWithMarket}}
+                    <option value="{{:Id}}">{{:Name}}</option>
+                    {{/for}}
+                </select>
+            </div>
+        </div>
+        {{/if}}
+        <button type="submit" class="btn btn-default">Save</button> <a href="javascript:HideStationEditor({{:Station.SystemId}},{{:Station.Id}})">Cancel</a>
+    </form>
+
+</script>
+
+<!-- Displays the list of stations in a system -->
+<script id="systemStationsTemplate" type="text/x-jsrender">
+    {{for stations}}
+    <div id="Station{{:Id}}">
+        {{for #data tmpl="#stationTemplate"/}}
+    </div>
+    {{/for}}
+    @if (User.IsInRole("Master")) {
+        <div id="NewStation"></div>
+        <a href="javascript:ShowStationEditor({{:systemId}},0)" class="btn btn-default" id="AddStationBtn" style="margin-top:5px;"><i class="fa fa-plus"></i> Add Station</a>
+    }
+</script>
+
+<!-- Displays the list of Commodities in a station -->
+<script id="stationCommoditiesTemplate" type="text/x-jsrender">
+    <hr style="margin-top:10px;" />
+
+    @*<div class="form-group">
+        <label class="radio-inline">
+            <input type="radio" name="entryType" id="entryType" value="Desktop" checked> Desktop
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="entryType" id="entryType" value="Mobile"> Mobile
+        </label>
+    </div>*@
+ 
+    <h3>Commodities at {{:StationName}}</h3>
+    <div class="form-inline">
+        <div class="form-group">
+            @Html.Label("CategoryId", "Filter:", new { @class = "control-label" })
+            <div class="form-group">
+                <select id="CategoryId" data-link="CategoryId" name="CategoryId" class="form-control" required>
+                    <option value="0">All</option>
+                    {^{for CommodityCategories}}
+                    <option value="{{:Value}}">{{:Text}}</option>
+                    {{/for}}
+                </select>
+            </div>
+            @if (User.IsInRole("Novice")) {
+                <div class="form-group">
+                    <a href="javascript:AddOneToCategory()" class="btn btn-default" id="AddOneCommodityBtn" style="display:none"><i class="fa fa-plus"></i> Add One To <span></span></a> <a href="javascript:AddAllCommoditiesToCategory()" id="AddManyCommodityBtn" class="btn btn-default"><i class="fa fa-plus-square"></i> <span>Add All Missing Commodities</span></a>
+                </div>
+            }
+        </div>
+        <p>Changes are saved as you make them. You can use the arrow keys to navigate through the form fields.</p>
+    </div>
+    <table class="table table-striped" id="StationCommodities">
+        <thead>
+            <tr>
+                <th>Commodity Name</th>
+                <th style="width:100px">Sell</th>
+                <th style="width:100px">Buy</th>
+                <th>Last Checked</th>
+                <th class="btnColumn">
+                    @if (User.IsInRole("Competent")) { 
+                <a href="javascript:ConfirmManyStationCommodities({{:StationId}})" class="btn btn-default" id="ConfirmManyBtn" style="display:none"><i class="fa fa-list"></i><span class="btnLabel"> Confirm All</span></a>
+                    }
+                </th>
+            </tr>
+        </thead>
+        <tbody id="CommodityList">
+            {{for StationCommodities tmpl="#commodityListTemplate" /}}
+        </tbody>
+    </table>
+</script>
+
+<script id="commodityListTemplate" type="text/x-jsrender">
+    <tr id="StationCommodity{{:Id}}">
+        {{for #data tmpl="#stationCommodityTemplate" /}}
+    </tr>
+</script>
+
+<script id="stationCommodityTemplate" type="text/x-jsrender">
+    <td><input type="hidden" id="CommodityId{{:Id}}" name="CommodityId{{:Id}}" value="{{:CommodityId}}" />{{:CommodityName}}</td>
+    <td><input type="text" id="sell{{:Id}}" name="sell{{:Id}}" data-id="{{:Id}}" data-action="sell" data-initalvalue="{{:Sell}}" class="form-control numbersOnly sell" data-content="Greater than 0" value="{{:Sell}}" /></td>
+    <td><input type="text" id="buy{{:Id}}" name="buy{{:Id}}" data-id="{{:Id}}" data-action="buy" data-initalvalue="{{:Buy}}" class="form-control numbersOnly buy" value="{{:Buy}}" /></td>
+    <td><a id="Updated{{:Id}}" class="updateInfo" title="Updated by CMDR {{:UpdatedBy}}">{{:TimeSince}}</a></td>
+    <td class="btnColumn"><a href="javascript:ConfirmStationCommodity({{:Id}})" class="btn btn-default saveConfirm"><i class="fa fa-thumbs-up"></i><span class="btnLabel"> Confirm</span></a>
+    @if (User.IsInRole("Expert")) {
+        <a href="javascript:DeleteStationCommodity({{:Id}})" class="btn btn-default deleteCancel" style="margin-left:5px"><i class="fa fa-trash"></i><span class="btnLabel"> Delete</span></a>
+    }
+    </td>
+</script>
+
+<script id="stationCommodityAddTemplate" type="text/x-jsrender">
+    <td id="CommodityIdCell{{:Id}}">
+        <select id="CommodityIdSelector" data-link="CommodityId" name="CommodityIdSelector" class="form-control" data-content="Choose a commodity" required>
+            <option value="" selected>- Choose -</option>
+            {^{for Commodities}}
+            <option value="{{:Value}}">{{:Text}}</option>
+            {{/for}}
+        </select>
+    </td>
+    <td id="SellCell{{:Id}}"><input type="number" id="sell{{:Id}}" name="sell{{:Id}}" data-id="{{:Id}}"  class="form-control numbersOnly" value="{{:Sell}}" data-content="Greater than 0" data-container="#SellCell{{:Id}}" /></td>
+    <td id="BuyCell{{:Id}}"><input type="text" id="buy{{:Id}}" name="buy{{:Id}}" data-id="{{:Id}}" class="form-control numbersOnly" value="{{:Buy}}" /></td>
+    <td><span class="msg"></span></td>
+    <td class="btnColumn"><a href="javascript:AddStationCommodity()" class="btn btn-default saveConfirm"><i class="fa fa-check"></i><span class="btnLabel"> Save</span></a> <a href="javascript:CancelAddStationCommodity()" class="btn btn-default delete" style="margin-left:5px"><i class="fa fa-times"></i><span class="btnLabel"> Cancel</span></a></td>
+</script>
+
+
+
+@section scripts{
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/admin")
+
+<script>
+    $(document).ready(function () {
+        RefreshSystemData();
+
+        $.ajax({
+            url: '/Admin/GetSelectLists',
+            type: 'GET',
+            success: function (data) {
+                selectLists = data;
+            }
+        });
+    });
+</script>
+}

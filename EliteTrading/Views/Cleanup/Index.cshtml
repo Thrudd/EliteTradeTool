@@ -1,0 +1,43 @@
+﻿@model IEnumerable<DuplicateSystem>
+
+@{
+    ViewBag.Title = "Duplicate Systems";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="ContentContainer" style="min-height:500px;">
+    <h2>Duplicate Systems</h2>
+
+    @using (Html.BeginForm("Index", "Cleanup", FormMethod.Post)) {
+        <input type="submit" class="btn btn-default" />
+        <table class="table table-striped">
+            <tr>
+                <td>
+                    Id
+                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DevData)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Allegiance)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Government)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Station)
+                </th>
+                <th>
+
+                </th>
+            </tr>
+
+
+            @Html.EditorForModel()
+
+        </table>
+
+    }
+</div>

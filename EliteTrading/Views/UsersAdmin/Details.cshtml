@@ -1,0 +1,96 @@
+﻿@model EliteTrading.Entities.ApplicationUser
+
+@{
+    ViewBag.Title = "User Admin - Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="ContentContainer" style="min-height:500px">
+    <h2>@ViewBag.Title</h2>
+    <div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.CommanderName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CommanderName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Rank)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Rank)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Reputation)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Reputation)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ReputationNeeded)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ReputationNeeded)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Queries)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Queries)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Updates)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Updates)
+            </dd>
+        </dl>
+    </div>
+
+    @using (Ajax.BeginForm("ChangeRank", new { id = Model.Id }, new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "Message" })) {
+
+        <div class="form-group">
+            @Html.Label("Change Rank", new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.DropDownList("rank", null, htmlAttributes: new { @class = "form-control" })
+
+            </div>
+        </div>
+        <input type="submit" value="Apply" class="btn btn-default" />
+    }
+
+    <div id="Message"></div>
+
+    <h4>List of roles for this user</h4>
+    @if (ViewBag.RoleNames.Count == 0) {
+        <hr />
+        <p>No roles found for this user.</p>
+    }
+
+    <table class="table">
+
+        @foreach (var item in ViewBag.RoleNames) {
+            <tr>
+                <td>
+                    @item
+                </td>
+            </tr>
+        }
+    </table>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-default" })
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</div>

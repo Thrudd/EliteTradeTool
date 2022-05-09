@@ -1,0 +1,45 @@
+﻿@model EliteTrading.Models.ViewModels.UserListViewModel
+
+@if (ViewBag.Filtered != null) {
+    <h3>Filtered by '@ViewBag.FilterName' - @Ajax.ActionLink("Clear", "List", new AjaxOptions { UpdateTargetId = "List" })</h3>
+}
+
+<table class="table table-striped">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Email
+        </th>
+        <th style="width:180px">
+
+        </th>
+    </tr>
+
+    @foreach (EliteTrading.Entities.ApplicationUser item in Model.Users) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommanderName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id, page = Model.Page }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id, page = Model.Page }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id, page = Model.Page })
+            </td>
+        </tr>
+    }
+
+</table>
+@{
+    for (int i = 1; i < Model.TotalPages + 1; i++) {
+        if (i == Model.Page) {
+            <strong>@i</strong>
+        } else {
+            @Html.ActionLink(i.ToString(), "Index", "UsersAdmin", new { page = i }, new { }) <text>&nbsp;</text>
+        }
+    }
+}

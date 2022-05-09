@@ -1,0 +1,174 @@
+﻿@model EliteTrading.Models.ViewModels.CalculatorQuery
+@using EliteTrading.Extensions
+@using EliteTrading.Models.ViewModels
+@{
+    ViewBag.Title = "Thrudds Elite:Dangerous Tools";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div id="NavTabs">
+    <ul class="nav nav-pills">
+        <li class="active" id="FAQBtn"><a href="javascript:ShowMainPanel('#FAQ','FAQ','/')"><i class="fa fa-info"></i> News/FAQ</a></li>
+        <li id="TradeCalculatorBtn"><a href="javascript:ShowMainPanel('#TradeCalculator','Trade Calculator','/TradeCalculator')"><i class="fa fa-calculator"></i> Trade Calculator</a></li>
+        <li id="FindTradesBtn"><a href="javascript:ShowMainPanel('#FindTrades','Find Trades','/FindTrades')"><i class="fa fa-arrows-h"></i> Find Trades</a></li>
+        <li id="DataListsBtn"><a href="javascript:ShowMainPanel('#DataLists','Data Lists','/DataLists')"><i class="fa fa-list"></i> Lists</a></li>
+        <li id="SearchBtn"><a href="javascript:ShowMainPanel('#Search','Search','/SearchTab')"><i class="fa fa-search"></i> Search</a></li>
+        <li id="RareTradesBtn"><a href="javascript:ShowMainPanel('#RareTrades','Rare Trades','/RareTrades')"><i class="fa fa-trophy"></i> Rares</a></li>
+    </ul>
+</div>
+
+<div id="ContentContainer" style="min-height:500px">
+
+    <div id="FAQ">
+        <hr />
+        <p>Thrudd's Trading Tools is a community populated searchable database of trade commodities and station services for the space simulation Elite: Dangerous.</p>
+
+        @if (ViewBag.News != null) {
+
+            <div id="News">
+                @Html.Raw(((EliteTrading.Entities.News)ViewBag.News).Message)
+            </div>
+        }
+        <hr />
+        <h2>FAQ</h2>
+        <h3>How is the data gathered?</h3>
+        <p>All data is gathered by members of the community and entered manually through an admin interface on the site, by uploading a csv of data gathered by using OCR tools or by using the EDDN network via <a href="https://github.com/Marginal/EDMarketConnector" target="_blank">ED Market Connector</a>.</p>
+        <p>To upload CSV data you need to have reached Competent rank on my site but using the site or updating prices. See the list below.</p>
+        <h3>How can I contribute?</h3>
+        <p>Access to the site is gained through registering and using the site. New users can query existing data after a few searches they can unlock the ability to edit prices and later adding editing stations and systems. Sending me a nicely worded email also works. ;)</p>
+        <p>Reputation awards are given for:</p>
+        <ul>
+            <li><span>Making a trade query</span></li>
+            <li><span>Confirming prices in the Station Commodities editor</span></li>
+            <li><span>Correcting prices in the Station Commodities editor</span></li>
+            <li><span>Uploading CSV commodity data.</span></li>
+            <li><span>Uploading commodity data via the EDDN.</span></li>
+            <li><span>Adding a missing Commodity to a Station</span></li>
+            <li><span>Adding or editing a Commodity thats new to the game or otherwise incorrect</span></li>
+            <li><span>Adding or editing a System or Station</span></li>
+        </ul>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Rep</th>
+                    <th>Benefits</th>
+                    <th>Suggestions To Achieve</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Elite</td>
+                    <td>n/a</td>
+                    <td>Admin features.</td>
+                    <td>Not achievable</td>
+                </tr>
+                <tr>
+                    <td>Deadly</td>
+                    <td>16000</td>
+                    <td>It's a cool title. No other benefits. :)</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Dangerous</td>
+                    <td>8000</td>
+                    <td>It's a cool title. No other benefits. :)</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Master</td>
+                    <td>4000</td>
+                    <td>Add/edit systems &amp; stations.</td>
+                    <td>Import another seven stations worth of data.</td>
+                </tr>
+                <tr>
+                    <td>Expert</td>
+                    <td>2000</td>
+                    <td>Delete incorrect station commodities &amp; add all missing commodities to a station shortcut.</td>
+                    <td>Import six stations worth of data from CSV.</td>
+                </tr>
+                <tr>
+                    <td>Competent</td>
+                    <td>250</td>
+                    <td>Add station commodities &amp; use the CSV import feature to update <strong>existing</strong> stations.</td>
+                    <td>Update prices in about five stations.</td>
+                </tr>
+                <tr>
+                    <td>Novice</td>
+                    <td>50</td>
+                    <td>Can manually confirm all prices in a station at once.</td>
+                    <td>Update a station or two.</td>
+                </tr>
+                <tr>
+                    <td>Mostly Harmless</td>
+                    <td>25</td>
+                    <td>Manually edit &amp; confirm prices.</td>
+                    <td>25 queries, won't take long to achieve. :)</td>
+                </tr>
+                <tr>
+                    <td>Harmless</td>
+                    <td>0</td>
+                    <td>Nothing special, you can query the data using the forms on the main page.</td>
+                    <td>Make an account.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div id="TradeCalculator" class="hidden">Loading <img src="~/Content/images/ajax-loader.gif" /></div>
+    <div id="FindTrades" class="hidden">Loading <img src="~/Content/images/ajax-loader.gif" /></div>
+    <div id="DataLists" class="hidden">Loading <img src="~/Content/images/ajax-loader.gif" /></div>
+    <div id="Search" class="hidden">Loading <img src="~/Content/images/ajax-loader.gif" /></div>
+    <div id="RareTrades" class="hidden">Loading <img src="~/Content/images/ajax-loader.gif" /></div>
+</div>
+
+
+@section scripts{
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(document).ready(function () {
+        var loadTradeCalculator = $.ajax({
+            url: '/Main/TradeCalculator',
+            success: function (data) {
+                $("#TradeCalculator").html(data);
+            }
+        });
+        var loadFindTrades = $.ajax({
+            url: '/Main/FindTrades',
+            success: function (data) {
+                $("#FindTrades").html(data);
+            }
+        });
+        var loadDataLists = $.ajax({
+            url: '/Main/DataLists',
+            success: function (data) {
+                $("#DataLists").html(data);
+            }
+        });
+        var loadSearchTab = $.ajax({
+            url: '/Main/SearchTab',
+            success: function (data) {
+                $("#Search").html(data);
+            }
+        });
+        var loadRareTrades = $.ajax({
+            url: '/Main/RareTrades',
+            success: function (data) {
+                $("#RareTrades").html(data);
+            }
+        });
+
+        GetUserLocationAndShipDetails();
+
+        $.when(loadTradeCalculator, loadFindTrades, loadDataLists, loadSearchTab, loadRareTrades).then(MainPanelsLoaded).then(function () { ApplyTypeahead(); });
+    });
+
+    function MainPanelsLoaded() {
+        
+        LinkUserEntryFormElements();
+    }
+
+    var currentMainPanel = '#FAQ';
+</script>
+}

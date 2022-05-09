@@ -1,0 +1,33 @@
+﻿@model EliteTrading.Services.EDDNStatus
+
+@{
+    ViewBag.Title = "EDDN Status";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="ContentContainer" style="min-height:500px;">
+    <h2>@ViewBag.Title</h2>
+
+    <div>
+        <h4>EDDNStatus</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Connected)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Connected)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+
+        </dl>
+    </div>
+</div>

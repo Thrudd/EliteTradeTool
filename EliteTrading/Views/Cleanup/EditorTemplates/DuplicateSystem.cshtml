@@ -1,0 +1,26 @@
+﻿@model DuplicateSystem
+
+
+<tr>
+    <td>
+        @Model.Id
+    </td>
+    <td>
+        @Model.Name
+    </td>
+    <td>
+        @Model.DevData
+    </td>
+    <td>
+        @Model.Allegiance
+    </td>
+    <td>
+        @Model.Government
+    </td>
+    <td>
+        @Model.Station
+    </td>
+    <td>
+        <input type="checkbox" name="duplicateSystemDeletebyId" id="duplicateSystemDeletebyId" value="@Model.Id" />  
+    </td>
+</tr>

@@ -1,0 +1,766 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C8F1A386-64D9-4ABD-9EE6-F337E6D7214F}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EliteTrading</RootNamespace>
+    <AssemblyName>EliteTrading</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <NuGetPackageImportStamp>a3a3fa8e</NuGetPackageImportStamp>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac, Version=4.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.5.0\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah.Mvc, Version=2.1.2.1389, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Elmah.Mvc.2.1.2\lib\net40\Elmah.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.1.0\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.1.0\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.1.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="PCLWebUtility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PCLWebUtility.1.0.3\Lib\portable-net4+sl4+wp7+win8\PCLWebUtility.dll</HintPath>
+    </Reference>
+    <Reference Include="Postal, Version=1.0.0.0, Culture=neutral, PublicKeyToken=45719375b8b4d528, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Postal.Mvc5.1.2.0\lib\net45\Postal.dll</HintPath>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.9.3.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.9.3\lib\net45\RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Recaptcha.Web, Version=2.1.0.0, Culture=neutral, PublicKeyToken=171a6ec5fa4b1644, processorArchitecture=MSIL">
+      <HintPath>..\packages\RecaptchaNet.2.1.0\lib\net451\Recaptcha.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\lato-bold-webfont.eot" />
+    <Content Include="Content\fonts\lato-bold-webfont.ttf" />
+    <Content Include="Content\fonts\lato-bold-webfont.woff" />
+    <Content Include="Content\fonts\lato-bold-webfont.woff2" />
+    <Content Include="Content\fonts\lato-italic-webfont.eot" />
+    <Content Include="Content\fonts\lato-italic-webfont.ttf" />
+    <Content Include="Content\fonts\lato-italic-webfont.woff" />
+    <Content Include="Content\fonts\lato-italic-webfont.woff2" />
+    <Content Include="Content\fonts\lato-regular-webfont.eot" />
+    <Content Include="Content\fonts\lato-regular-webfont.ttf" />
+    <Content Include="Content\fonts\lato-regular-webfont.woff" />
+    <Content Include="Content\fonts\lato-regular-webfont.woff2" />
+    <Content Include="Content\fonts\teko-bold-webfont.eot" />
+    <Content Include="Content\fonts\teko-bold-webfont.ttf" />
+    <Content Include="Content\fonts\teko-bold-webfont.woff" />
+    <Content Include="Content\fonts\teko-bold-webfont.woff2" />
+    <Content Include="Content\fonts\teko-regular-webfont.eot" />
+    <Content Include="Content\fonts\teko-regular-webfont.ttf" />
+    <Content Include="Content\fonts\teko-regular-webfont.woff" />
+    <Content Include="Content\fonts\teko-regular-webfont.woff2" />
+    <Content Include="Content\images\Surface.png" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Horizons.html" />
+    <Content Include="Icon.png" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="RecaptchaNet.Readme.txt" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jsviews.min.js.map" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\npm.js" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
+    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
+    <Content Include="Views\Admin\Import.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Cleanup\EditorTemplates\DuplicateSystem.cshtml" />
+    <Content Include="Views\Cleanup\Index.cshtml" />
+    <Content Include="Views\Commodities\Create.cshtml" />
+    <Content Include="Views\Commodities\Delete.cshtml" />
+    <Content Include="Views\Commodities\Details.cshtml" />
+    <Content Include="Views\Commodities\Edit.cshtml" />
+    <Content Include="Views\Commodities\Index.cshtml" />
+    <Content Include="Views\Contact\Index.cshtml" />
+    <Content Include="Views\Contact\MailSent.cshtml" />
+    <Content Include="Views\Emails\Account.cshtml" />
+    <Content Include="Views\Emails\Account.Html.cshtml" />
+    <Content Include="Views\Emails\Account.Text.cshtml" />
+    <Content Include="Views\Emails\Contact.cshtml" />
+    <Content Include="Views\Emails\Contact.Html.cshtml" />
+    <Content Include="Views\Emails\Contact.Text.cshtml" />
+    <Content Include="Views\Emails\Web.config" />
+    <Content Include="Views\Log\Index.cshtml" />
+    <Content Include="Views\Main\Contributors.cshtml" />
+    <Content Include="Views\Main\DataLists.cshtml" />
+    <Content Include="Views\Main\FindRoute.cshtml" />
+    <Content Include="Views\Main\FindTrades.cshtml" />
+    <Content Include="Views\Main\Privacy.cshtml" />
+    <Content Include="Views\Main\RareTrades.cshtml" />
+    <Content Include="Views\Main\SearchTab.cshtml" />
+    <Content Include="Views\Main\Thanks.cshtml" />
+    <Content Include="Views\Main\TradeCalculator.cshtml" />
+    <Content Include="Views\Main\_Demand.cshtml" />
+    <Content Include="Views\Main\_StationDetails.cshtml" />
+    <Content Include="Views\Main\_Supply.cshtml" />
+    <Content Include="Views\News\Index.cshtml" />
+    <Content Include="Views\RareTrades\Create.cshtml" />
+    <Content Include="Views\RareTrades\Delete.cshtml" />
+    <Content Include="Views\RareTrades\Details.cshtml" />
+    <Content Include="Views\RareTrades\Edit.cshtml" />
+    <Content Include="Views\RareTrades\Import.cshtml" />
+    <Content Include="Views\RareTrades\Index.cshtml" />
+    <Content Include="Views\RolesAdmin\Create.cshtml" />
+    <Content Include="Views\RolesAdmin\Delete.cshtml" />
+    <Content Include="Views\RolesAdmin\Details.cshtml" />
+    <Content Include="Views\RolesAdmin\Edit.cshtml" />
+    <Content Include="Views\RolesAdmin\Index.cshtml" />
+    <Content Include="Views\RolesAdmin\_CreateEdit.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\UsersAdmin\Create.cshtml" />
+    <Content Include="Views\UsersAdmin\Delete.cshtml" />
+    <Content Include="Views\UsersAdmin\Details.cshtml" />
+    <Content Include="Views\UsersAdmin\Edit.cshtml" />
+    <Content Include="Views\UsersAdmin\Index.cshtml" />
+    <Content Include="Views\UsersAdmin\_List.cshtml" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="packages.config" />
+    <Content Include="Views\Emails\_ViewStart.cshtml" />
+    <Content Include="Views\Account\ResendConfirmEmail.cshtml" />
+    <Content Include="Views\Admin\EDDN.cshtml" />
+    <Content Include="Views\Admin\MissingStations.cshtml" />
+    <Content Include="Views\Main\Index.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="apple-touch-icon-114x114.png" />
+    <Content Include="apple-touch-icon-120x120.png" />
+    <Content Include="apple-touch-icon-144x144.png" />
+    <Content Include="apple-touch-icon-152x152.png" />
+    <Content Include="apple-touch-icon-180x180.png" />
+    <Content Include="apple-touch-icon-57x57.png" />
+    <Content Include="apple-touch-icon-60x60.png" />
+    <Content Include="apple-touch-icon-72x72.png" />
+    <Content Include="apple-touch-icon-76x76.png" />
+    <Content Include="apple-touch-icon-precomposed.png" />
+    <Content Include="apple-touch-icon.png" />
+    <Content Include="browserconfig.xml" />
+    <Content Include="Content\amaran.min.css" />
+    <Content Include="Content\animate.min.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\fonts\lato-bold-webfont.svg" />
+    <Content Include="Content\fonts\lato-italic-webfont.svg" />
+    <Content Include="Content\fonts\lato-regular-webfont.svg" />
+    <Content Include="Content\fonts\teko-bold-webfont.svg" />
+    <Content Include="Content\fonts\teko-regular-webfont.svg" />
+    <Content Include="Content\images\ajax-loader.gif" />
+    <Content Include="Content\images\Alliance.png" />
+    <Content Include="Content\images\competent.png" />
+    <Content Include="Content\images\Coriolis.png" />
+    <Content Include="Content\images\dangerous.png" />
+    <Content Include="Content\images\deadly.png" />
+    <Content Include="Content\images\Elite-Dangerous1.jpg" />
+    <Content Include="Content\images\elite.png" />
+    <Content Include="Content\images\Empire.png" />
+    <Content Include="Content\images\expert.png" />
+    <Content Include="Content\images\Federation.png" />
+    <Content Include="Content\images\harmless.png" />
+    <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\master.png" />
+    <Content Include="Content\images\mostlyharmless.png" />
+    <Content Include="Content\images\none.png" />
+    <Content Include="Content\images\novice.png" />
+    <Content Include="Content\images\Ocellus.png" />
+    <Content Include="Content\images\Orbis.png" />
+    <Content Include="Content\images\Outpost.png" />
+    <Content Include="Content\images\Permit.png" />
+    <Content Include="Content\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_8_333333_40x40.png" />
+    <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_65_ffffff_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\images\ui-bg_glass_40_111111_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_55_1c1c1c_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\images\ui-bg_highlight-hard_100_f9f9f9_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-hard_40_aaaaaa_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_50_aaaaaa_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\images\ui-bg_inset-hard_45_cd0a0a_1x100.png" />
+    <Content Include="Content\images\ui-bg_inset-hard_55_ffeb80_1x100.png" />
+    <Content Include="Content\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\images\ui-icons_4ca300_256x240.png" />
+    <Content Include="Content\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\images\ui-icons_bbbbbb_256x240.png" />
+    <Content Include="Content\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\images\ui-icons_ededed_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffcf29_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\Site.css" />
+    <Content Include="favicon-160x160.png" />
+    <Content Include="favicon-16x16.png" />
+    <Content Include="favicon-192x192.png" />
+    <Content Include="favicon-32x32.png" />
+    <Content Include="favicon-96x96.png" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="mstile-144x144.png" />
+    <Content Include="mstile-150x150.png" />
+    <Content Include="mstile-310x150.png" />
+    <Content Include="mstile-310x310.png" />
+    <Content Include="mstile-70x70.png" />
+    <Content Include="Scripts\accounting.js" />
+    <Content Include="Scripts\accounting.min.js" />
+    <Content Include="Scripts\Admin.js" />
+    <Content Include="Scripts\bootstrap.file-input.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap.validator.fix.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.amaran.min.js" />
+    <Content Include="Scripts\jquery.floatThead-slim.min.js" />
+    <Content Include="Scripts\jquery.floatThead.min.js" />
+    <Content Include="Scripts\jquery.tablesorter.min.js" />
+    <Content Include="Scripts\jquery.ui.touch-punch.min.js" />
+    <Content Include="Scripts\jquery.validate.change-messages.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jsviews.js" />
+    <Content Include="Scripts\jsviews.min.js" />
+    <Content Include="Scripts\loadout.js" />
+    <Content Include="Scripts\modernizr-2.7.2.js" />
+    <Content Include="Scripts\Modernizr.js" />
+    <Content Include="Scripts\numericInput.js" />
+    <Content Include="Scripts\numericInput.min.js" />
+    <Content Include="Scripts\papaparse.min.js" />
+    <Content Include="Scripts\picnet.table.filter.min.js" />
+    <Content Include="Scripts\scripts.js" />
+    <Content Include="Scripts\typeahead.bundle.js" />
+    <None Include="Scripts\_references.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CleanupController.cs" />
+    <Compile Include="Controllers\CommoditiesController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
+    <Compile Include="Controllers\EliteTradingToolController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\RareTradesController.cs" />
+    <Compile Include="Controllers\RolesAdminController.cs" />
+    <Compile Include="Controllers\UsersAdminController.cs" />
+    <Compile Include="Extensions\AjaxAwareController.cs" />
+    <Compile Include="Extensions\CancelledTaskBugWorkaroundMessageHandler.cs" />
+    <Compile Include="Extensions\CustomAuthorizationServerProvider.cs" />
+    <Compile Include="Extensions\CustomJsonResult.cs" />
+    <Compile Include="Extensions\DefaultCacheProvider.cs" />
+    <Compile Include="Migrations\201512231123192_Increased_News.cs" />
+    <Compile Include="Migrations\201512231123192_Increased_News.Designer.cs">
+      <DependentUpon>201512231123192_Increased_News.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Extensions\ExtensionMethods.cs" />
+    <Compile Include="Extensions\NoCacheHeaderFilter.cs" />
+    <Compile Include="Extensions\PeriodOfTimeOutput.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411190138550_Azure-initial.cs" />
+    <Compile Include="Migrations\201411190138550_Azure-initial.Designer.cs">
+      <DependentUpon>201411190138550_Azure-initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411222116148_Removed-DemandSupply.cs" />
+    <Compile Include="Migrations\201411222116148_Removed-DemandSupply.Designer.cs">
+      <DependentUpon>201411222116148_Removed-DemandSupply.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411222133409_Added-Version-to-StationCommodities.cs" />
+    <Compile Include="Migrations\201411222133409_Added-Version-to-StationCommodities.Designer.cs">
+      <DependentUpon>201411222133409_Added-Version-to-StationCommodities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411280211252_StationChanges.cs" />
+    <Compile Include="Migrations\201411280211252_StationChanges.Designer.cs">
+      <DependentUpon>201411280211252_StationChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411280249426_SystemChanges.cs" />
+    <Compile Include="Migrations\201411280249426_SystemChanges.Designer.cs">
+      <DependentUpon>201411280249426_SystemChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412060740015_Secondary-Economy-Added-To-Stations.cs" />
+    <Compile Include="Migrations\201412060740015_Secondary-Economy-Added-To-Stations.Designer.cs">
+      <DependentUpon>201412060740015_Secondary-Economy-Added-To-Stations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412061118173_Added-Status-Table.cs" />
+    <Compile Include="Migrations\201412061118173_Added-Status-Table.Designer.cs">
+      <DependentUpon>201412061118173_Added-Status-Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201412090439497_Added-RareTrade.cs" />
+    <Compile Include="Migrations\201412090439497_Added-RareTrade.Designer.cs">
+      <DependentUpon>201412090439497_Added-RareTrade.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501140313017_added-supply-demand-to-commodities-removed-some-old-stuff.cs" />
+    <Compile Include="Migrations\201501140313017_added-supply-demand-to-commodities-removed-some-old-stuff.Designer.cs">
+      <DependentUpon>201501140313017_added-supply-demand-to-commodities-removed-some-old-stuff.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501150805426_renamed-notification-to-news.cs" />
+    <Compile Include="Migrations\201501150805426_renamed-notification-to-news.Designer.cs">
+      <DependentUpon>201501150805426_renamed-notification-to-news.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501200646292_added-max-min-to-commodities.cs" />
+    <Compile Include="Migrations\201501200646292_added-max-min-to-commodities.Designer.cs">
+      <DependentUpon>201501200646292_added-max-min-to-commodities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201501221139267_added-permitrequired-to-system.cs" />
+    <Compile Include="Migrations\201501221139267_added-permitrequired-to-system.Designer.cs">
+      <DependentUpon>201501221139267_added-permitrequired-to-system.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502120324202_changed-system-name-length.cs" />
+    <Compile Include="Migrations\201502120324202_changed-system-name-length.Designer.cs">
+      <DependentUpon>201502120324202_changed-system-name-length.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502201307288_AddedIcon-To-StationTypes.cs" />
+    <Compile Include="Migrations\201502201307288_AddedIcon-To-StationTypes.Designer.cs">
+      <DependentUpon>201502201307288_AddedIcon-To-StationTypes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502211047098_removed-pad-sizes.cs" />
+    <Compile Include="Migrations\201502211047098_removed-pad-sizes.Designer.cs">
+      <DependentUpon>201502211047098_removed-pad-sizes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505042214160_Factions-and-servies-added-to-stations.cs" />
+    <Compile Include="Migrations\201505042214160_Factions-and-servies-added-to-stations.Designer.cs">
+      <DependentUpon>201505042214160_Factions-and-servies-added-to-stations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505051351457_station-last-update-length-added.cs" />
+    <Compile Include="Migrations\201505051351457_station-last-update-length-added.Designer.cs">
+      <DependentUpon>201505051351457_station-last-update-length-added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512140239050_Station_PrimaryType_Removed.cs" />
+    <Compile Include="Migrations\201512140239050_Station_PrimaryType_Removed.Designer.cs">
+      <DependentUpon>201512140239050_Station_PrimaryType_Removed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512222024486_EDDNLog_Added.cs" />
+    <Compile Include="Migrations\201512222024486_EDDNLog_Added.Designer.cs">
+      <DependentUpon>201512222024486_EDDNLog_Added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201512261404590_added_systemid_to_EDDNLogs.cs" />
+    <Compile Include="Migrations\201512261404590_added_systemid_to_EDDNLogs.Designer.cs">
+      <DependentUpon>201512261404590_added_systemid_to_EDDNLogs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AccountEmail.cs" />
+    <Compile Include="Models\Admin\AdminCategoryCommodityList.cs" />
+    <Compile Include="Models\Admin\AdminCommodityList.cs" />
+    <Compile Include="Models\Admin\AdminCommoditySearchList.cs" />
+    <Compile Include="Models\Admin\AdminImportData.cs" />
+    <Compile Include="Models\Admin\AdminImportResult.cs" />
+    <Compile Include="Models\Admin\AdminImportStation.cs" />
+    <Compile Include="Models\Admin\AdminImportStationCommodities.cs" />
+    <Compile Include="Models\Admin\AdminImportStationCommodity.cs" />
+    <Compile Include="Models\Admin\AdminImportStationOutOfRangeCommodity.cs" />
+    <Compile Include="Models\Admin\AdminSelectLists.cs" />
+    <Compile Include="Models\Admin\AdminSelector.cs" />
+    <Compile Include="Models\Admin\AdminStation.cs" />
+    <Compile Include="Models\Admin\AdminStationCommodities.cs" />
+    <Compile Include="Models\Admin\AdminStationCommodity.cs" />
+    <Compile Include="Models\Admin\AdminSystem.cs" />
+    <Compile Include="Models\Admin\AdminSystemSations.cs" />
+    <Compile Include="Models\EDSC\StarData.cs" />
+    <Compile Include="Models\EDSC\StarDataResult.cs" />
+    <Compile Include="Models\EDSC\Status.cs" />
+    <Compile Include="Models\Calculator\CalculatorQuery.cs" />
+    <Compile Include="Models\Calculator\CalculatorResult.cs" />
+    <Compile Include="Models\Calculator\Station.cs" />
+    <Compile Include="Models\Calculator\StationCommodity.cs" />
+    <Compile Include="Models\CommodityValueBracket.cs" />
+    <Compile Include="Models\ContactEmail.cs" />
+    <Compile Include="Models\DataLists\Commodity.cs" />
+    <Compile Include="Models\DataLists\CommodityCategories.cs" />
+    <Compile Include="Models\DataLists\CommodityListItem.cs" />
+    <Compile Include="Models\DataLists\DataListsQuery.cs" />
+    <Compile Include="Models\DataLists\DataListsResult.cs" />
+    <Compile Include="Models\DataLists\DataListsSystem.cs" />
+    <Compile Include="Models\DataLists\DataListStation.cs" />
+    <Compile Include="Models\FindHighestTradeCommodityQuery.cs" />
+    <Compile Include="Models\HighestReturnCommodity.cs" />
+    <Compile Include="Models\ResultMessage.cs" />
+    <Compile Include="Models\Search\SearchedStation.cs" />
+    <Compile Include="Models\Admin\AdminStationCommodityChangeResult.cs" />
+    <Compile Include="Models\EDSC\System.cs" />
+    <Compile Include="Models\StationListItem_Api.cs" />
+    <Compile Include="Models\StationsListResult_Api.cs" />
+    <Compile Include="Models\ViewModels\AccountViewModels.cs" />
+    <Compile Include="Models\FindTrades\BestTradeItem.cs" />
+    <Compile Include="Models\ViewModels\CommoditiesList.cs" />
+    <Compile Include="Models\Search\CommodityList.cs" />
+    <Compile Include="Models\ViewModels\CommodityListingItem.cs" />
+    <Compile Include="Models\ViewModels\CommodityRouteList.cs" />
+    <Compile Include="Models\ViewModels\ContactViewModel.cs" />
+    <Compile Include="Models\ViewModels\EditUserViewModel.cs" />
+    <Compile Include="Models\ViewModels\FindTradesQuery.cs" />
+    <Compile Include="Models\ViewModels\MissingStationViewModel.cs" />
+    <Compile Include="Models\ViewModels\PositionQueryViewModel.cs" />
+    <Compile Include="Models\ViewModels\RareTradesQuery.cs" />
+    <Compile Include="Models\ViewModels\RareTradesQueryViewModel.cs" />
+    <Compile Include="Models\ViewModels\RareTradesResultsViewModel.cs" />
+    <Compile Include="Models\ViewModels\RoleViewModel.cs" />
+    <Compile Include="Models\Search\SearchQuery.cs" />
+    <Compile Include="Models\Search\SearchQueryViewModel.cs" />
+    <Compile Include="Models\Search\SearchResultViewModel.cs" />
+    <Compile Include="Models\API\StarData.cs" />
+    <Compile Include="Models\ViewModels\StationCommoditiesViewModel.cs" />
+    <Compile Include="Models\ViewModels\StationCommodityViewModel.cs" />
+    <Compile Include="Models\Search\StationDetailViewModel.cs" />
+    <Compile Include="Models\ViewModels\StationListItem.cs" />
+    <Compile Include="Models\ViewModels\TopContributor.cs" />
+    <Compile Include="Models\Admin\UserListViewModel.cs" />
+    <Compile Include="Models\ViewModels\WhatToBuyStationByCommodityViewModel.cs" />
+    <Compile Include="Models\ViewModels\WhatToBuyViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\EDDNChecker.cs" />
+    <Compile Include="Services\NewsService.cs" />
+    <Compile Include="Services\QueryService.cs" />
+    <Compile Include="Services\ReputationService.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201411190138550_Azure-initial.resx">
+      <DependentUpon>201411190138550_Azure-initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411222116148_Removed-DemandSupply.resx">
+      <DependentUpon>201411222116148_Removed-DemandSupply.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411222133409_Added-Version-to-StationCommodities.resx">
+      <DependentUpon>201411222133409_Added-Version-to-StationCommodities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411280211252_StationChanges.resx">
+      <DependentUpon>201411280211252_StationChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411280249426_SystemChanges.resx">
+      <DependentUpon>201411280249426_SystemChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412060740015_Secondary-Economy-Added-To-Stations.resx">
+      <DependentUpon>201412060740015_Secondary-Economy-Added-To-Stations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412061118173_Added-Status-Table.resx">
+      <DependentUpon>201412061118173_Added-Status-Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201412090439497_Added-RareTrade.resx">
+      <DependentUpon>201412090439497_Added-RareTrade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501140313017_added-supply-demand-to-commodities-removed-some-old-stuff.resx">
+      <DependentUpon>201501140313017_added-supply-demand-to-commodities-removed-some-old-stuff.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501150805426_renamed-notification-to-news.resx">
+      <DependentUpon>201501150805426_renamed-notification-to-news.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501200646292_added-max-min-to-commodities.resx">
+      <DependentUpon>201501200646292_added-max-min-to-commodities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501221139267_added-permitrequired-to-system.resx">
+      <DependentUpon>201501221139267_added-permitrequired-to-system.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502120324202_changed-system-name-length.resx">
+      <DependentUpon>201502120324202_changed-system-name-length.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502201307288_AddedIcon-To-StationTypes.resx">
+      <DependentUpon>201502201307288_AddedIcon-To-StationTypes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502211047098_removed-pad-sizes.resx">
+      <DependentUpon>201502211047098_removed-pad-sizes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505042214160_Factions-and-servies-added-to-stations.resx">
+      <DependentUpon>201505042214160_Factions-and-servies-added-to-stations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505051351457_station-last-update-length-added.resx">
+      <DependentUpon>201505051351457_station-last-update-length-added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512140239050_Station_PrimaryType_Removed.resx">
+      <DependentUpon>201512140239050_Station_PrimaryType_Removed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512222024486_EDDNLog_Added.resx">
+      <DependentUpon>201512222024486_EDDNLog_Added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512231123192_Increased_News.resx">
+      <DependentUpon>201512231123192_Increased_News.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512261404590_added_systemid_to_EDDNLogs.resx">
+      <DependentUpon>201512261404590_added_systemid_to_EDDNLogs.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\Entities\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EliteTrading.Entities\EliteTrading.Entities.csproj">
+      <Project>{ec12c7d2-aa10-4f61-ab2d-6993a94c2b5e}</Project>
+      <Name>EliteTrading.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>54652</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:52607/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

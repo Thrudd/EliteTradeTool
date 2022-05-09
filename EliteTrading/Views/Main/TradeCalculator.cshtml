@@ -1,0 +1,258 @@
+﻿@using EliteTrading.Extensions
+@using EliteTrading.Models.ViewModels
+@{
+    ViewBag.Title = "Trade Query";
+    Layout = null;
+}
+
+<form id="TradeCalcForm" class="form-horizontal">
+    <hr />
+    <p style="margin-left:10px">Choose between any configuration of start and end systems and stations then set your other filter criteria. At a minimum either the start system or end system is required to get results.</p>
+
+    <div class="col-md-6">
+        <fieldset>
+            <legend>Location</legend>
+
+            <div class="form-group">
+                @Html.Label("StartSystem", "Start System", new { @class = "control-label col-sm-4" })
+                <div class="col-sm-8">
+                    @Html.TextBox("StartSystem", null, new { id = "StartSystem", @class = "form-control typeahead systemList", placeholder = "Start System", data_link = "StartSystem" })
+                    <a href="javascript:ClearTypeAhead('StartSystem')" class="clearBtn"><i class="fa fa-eraser"></i></a>
+                </div>
+            </div>
+
+            <div class="form-group hidden" id="StartSystemStationsGroup">
+                @Html.Label("StartStation", "Start Station", new { @class = "control-label col-sm-4" })
+                <div id="StartSystemStations" class="col-sm-8"></div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("EndSystem", "End System", new { @class = "control-label col-sm-4" })
+                <div class="col-sm-8">
+                    @Html.TextBox("EndSystem", null, new { id = "EndSystem", @class = "form-control typeahead systemList", placeholder = "End System", data_link = "EndSystem" })
+                    <a href="javascript:ClearTypeAhead('EndSystem')" class="clearBtn"><i class="fa fa-eraser"></i></a>
+
+                </div>
+            </div>
+
+            <div class="form-group hidden" id="EndSystemStationsGroup">
+                @Html.Label("EndStation", "End Station", new { @class = "control-label col-sm-4" })
+                <div id="EndSystemStations" class="col-sm-8"></div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-md-6">
+        <fieldset>
+            <legend>Filters</legend>
+
+
+            <div class="form-group">
+                @Html.Label("Cargo", "Cargo Capacity", htmlAttributes: new { @class = "control-label col-sm-4" })
+                <div class="col-sm-8">
+                    @Html.TextBox("Cargo", null, new { @class = "form-control numbersOnly cargo", style = "display:inline-block;width:120px", oninput = "maxLengthCheck(this)", maxlength = "4", min = "1", max = "9999", data_val = "true", data_link = "Cargo" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Cash", "Cash", htmlAttributes: new { @class = "control-label col-sm-4" })
+                <div class="col-sm-8">
+                    @Html.TextBox("Cash", null, new { @class = "form-control numbersOnly cash", style = "display:inline-block;width:120px", oninput = "maxLengthCheck(this)", maxlength = "8", min = "1", max = "99999999", data_link = "Cash" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("MinProfit", "Min Profit", htmlAttributes: new { @class = "control-label col-sm-4" })
+                <div class="col-sm-8">
+                    @Html.TextBox("MinProfit", null, new { @class = "form-control floatOnly minProfit", style = "display:inline-block;width:120px", oninput = "maxLengthCheck(this)", maxlength = "7", min = "0", max = "9999999", data_link = "MinProfit" })
+                </div>
+            </div>
+
+            <div class="form-group" id="MaxDistanceFromJumpInGroup">
+                @Html.Label("MaxDistanceFromJumpIn", "Max Distance To Station", new { @class = "control-label col-sm-4" })
+                <div class="col-sm-8">
+                    @Html.TextBox("MaxDistanceFromJumpIn", 1000, new { id = "MaxDistanceFromJumpIn", @class = "form-control floatOnly MaxDistanceFromJumpIn", style = "display:inline-block;width:120px", data_link = "MaxDistanceFromJumpIn", required = "required" }) (In ls)
+                </div>
+            </div>
+
+            <div class="form-group" id="SearchRangeGroup">
+                @Html.Label("SearchRange", "Search Range Box", new { @class = "control-label col-sm-4" })
+                <div class="col-sm-8" style="padding-top: 5px;">
+                    <label>
+                        @Html.RadioButton("SearchRange", 15.0, true, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">15 ly</span>
+                    </label>
+                    <label>
+                        @Html.RadioButton("SearchRange", 25.0, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">25 ly</span>
+                    </label>
+                    <label>
+                        @Html.RadioButton("SearchRange", 50.0, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">50 ly</span>
+                    </label>
+                    <label>
+                        @Html.RadioButton("SearchRange", 75.0, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">75 ly</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("ExcludeOutposts", "Exclude Outposts", new { @class = "control-label col-sm-4" })
+                <div class="col-sm-8">
+                    <label style="padding-top: 5px;">
+                        @Html.CheckBox("ExcludeOutposts", new { data_link = "ExcludeOutposts" })
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("ExcludePlanets", "Exclude Surface Ports", new { @class = "control-label col-sm-4" })
+                <div class="col-sm-8">
+                    <label style="padding-top: 5px;">
+                        @Html.CheckBox("ExcludePlanets", new { data_link = "ExcludePlanets" })
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div id="CalcBtns">
+        <span id="CalcSpinner" class="hidden"> <img src="~/Content/images/ajax-loader.gif" /> Searching</span> <a id="CalculateBtn" href="#" class="btn btn-default hidden"><i class="fa fa-calculator"></i> Calculate</a>  <a href="javascript:ReverseCalculatorQuery()" class="btn btn-default hidden" id="ReverseBtn"><i class="fa fa-refresh"></i> Reverse Route</a>
+    </div>
+</form>
+
+
+<div id="RoutePlanner" class="hidden"></div>
+
+<div id="Instructions" class="hidden">
+    <hr />
+    <p>Click <i class="fa fa-share"></i> to add the row to the route planner and reload the list with the destination stations data.</p>
+    <p>Prices in game fluctuate so the price below might be slightly off.
+    @if (!User.Identity.IsAuthenticated) {
+        @: Logged in users that have achieved the 'Mostly Harmless' rank or above can edit prices. Dangerous and above can add/edit systems and stations.
+    }
+    @if(User.IsInRole("Mostly Harmless")){
+    @: If you see a wrong price please correct it by going to the @Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" }) page and then clicking on the 'Station Commodities' link in the Admin menu at the top of the page.
+    }</p>
+</div>
+
+
+<div id="CalcListing" class="hidden"></div>
+<div id="CalcStationData" class="hidden"></div>
+
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(document).ready(function () {
+        SetUpCalculator();
+    });
+
+    var form = $("#TradeCalcForm");
+    form.removeData('validator');
+    form.removeData('unobtrusiveValidation');
+    $.validator.unobtrusive.parse(form);
+</script>
+
+<script id="RouteTemplate" type="text/x-jsrender">
+    <hr />
+    <h3>Planned Trade Route</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Source</th>
+                <th>Commodity</th>
+                <th>Destination</th>
+                <th>Distance</th>
+                <th>Profit</th>
+                <th>Qty</th>
+                <th>Total Profit</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {^{for Routes}}
+            <tr>
+                <td>{{:Source}}<br />Buy: {{:Buy}}</td>
+                <td>{{:Commodity}}</td>
+                <td>{{:Destination}}<br /> Sell: {{:Sell}}</td>
+                <td>{{:Distance}}</td>
+                <th>{{:ProfitFormatted}}</th>
+                <td>{{:Qty}}</td>
+                <td>{{:RunProfitFormatted}}</td>
+                <td><a href="javascript:RemoveFromRoutePlan({{:Id}})"><i class="glyphicon glyphicon-remove"></i></a></td>
+            </tr>
+            {{/for}}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6"></td>
+                <td>{^{:TotalProfitFormatted}}cr</td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</script>
+
+<script id="CalcListingTemplate" type="text/x-jsrender">
+    <hr />
+
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-striped" id="CalcTable">
+                <thead>
+                    <tr>
+                        <th class="sortable">Source</th>
+                        <th class="sortable">Commodity</th>
+                        <th class="sortable">Destination</th>
+
+                        <th class="sortable">Distance</th>
+                        
+
+                        <th class="sortable">Profit</th>
+                        <th class="sortable">Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {^{for Results}}
+                    <tr id="Row{{:#index}}" class="resultRow">
+                        <td>
+                            <div class="iconColumn">
+                                <img src="/Content/images/{{:SourceStationTypeIcon}}.png" title="{{:SourceStationTypeName}}" />
+                                {{if SourceStationAllegiance !="Independent" }}
+                                <img src="/Content/images/{{:SourceStationAllegiance}}.png" title="{{:SourceStationAllegiance}}" />
+                                {{/if}}
+                                {{if SourcePermitRequired > 0}}<img src="/Content/images/Permit.png" title="Permit Required" /> {{/if}}
+                            </div>
+                            <div class="stationInfoColumn">
+                                <a data-ajax="true" data-ajax-begin="ShowCalcSpinner" data-ajax-mode="replace" data-ajax-success="ShowStationData" data-ajax-update="#CalcStationData" href="/Main/StationDetails/{{:SourceStationId}}">{{:Source}}</a> {{if SourceStationDistance > 0}} {{:SourceStationDistance}} ls {{/if}}<br />
+                                <span>Buy: {{:Buy}} (<a title="Updated by CMDR {{:BuyUpdatedBy}}" class="updateInfo">{{:BuyLastUpdate}}</a>)</span><br />
+                                Supply: {{if SupplyAmount ne=0}} {{:Supply}} {{:SupplyAmount}} {{else}} Unknown {{/if}}
+                            </div>
+                        </td>
+                        <td>
+                            {{:Qty}} {{:CommodityName}}<br />
+                            <span>Galactic Avg: {{:GalacticAveragePrice}}</span>
+                        </td>
+                        <td class="stationCommodityCell">
+                            <div class="iconColumn">
+                                <img src="/Content/images/{{:DestinationStationTypeIcon}}.png" title="{{:DestinationStationTypeName}}" />
+                                {{if DestinationStationAllegiance !="Independent" }}
+                                <img src="/Content/images/{{:DestinationStationAllegiance}}.png" title="{{:DestinationStationAllegiance}}" />
+                                {{/if}}
+                                {{if DestinationPermitRequired > 0}}<img src="/Content/images/Permit.png" title="Permit Required" /> {{/if}}
+                            </div>
+                            <div class="stationInfoColumn">
+                                <a data-ajax="true" data-ajax-begin="ShowCalcSpinner" data-ajax-mode="replace" data-ajax-success="ShowStationData" data-ajax-update="#CalcStationData" href="/Main/StationDetails/{{:DestinationStationId}}">{{:Destination}}</a> {{if DestinationStationDistance > 0}} {{:DestinationStationDistance}} ls {{/if}}<br />
+                                <span>Sell: {{:Sell}}</span> (<a title="Updated by CMDR {{:SellUpdatedBy}}" class="updateInfo">{{:SellLastUpdate}})</a> <br />
+                                Demand: {{if DemandAmount ne=0}} {{:Demand}} {{:DemandAmount}} {{else}} Unknown {{/if}}
+                            </div>
+                        </td>
+                        <td>{{:Distance}}</td>
+                        
+                        <td>{{:Profit}}</td>
+                        <td>{{:TotalProfit}}</td>
+                        
+                        <th><a href="javascript:AddToRoutePlan('{{:SourceEncoded}}', '{{:DestinationEncoded}}', {{:SourceStationId}}, '{{:SourceSystemNameEncoded}}', {{:DestinationStationId}}, '{{:DestinationSystemNameEncoded}}', {{:Distance}},'{{:CommodityName}}', {{:BuyUnformatted}}, {{:SellUnformatted}}, {{:Qty}}, {{:ProfitUnformatted}}, {{:TotalProfitUnformatted}})" title="Add to route plan"><i class="fa fa-share"></i></a></th>
+                    </tr>
+                    {{/for}}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</script>

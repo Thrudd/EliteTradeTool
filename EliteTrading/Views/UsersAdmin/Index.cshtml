@@ -1,0 +1,26 @@
+﻿@model EliteTrading.Models.ViewModels.UserListViewModel
+
+@{
+    ViewBag.Title = "User Admin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="ContentContainer" style="min-height:500px">
+    <h2>Users</h2>
+
+    @using (Ajax.BeginForm("FilterBy", "UsersAdmin", new AjaxOptions { UpdateTargetId = "List", InsertionMode = InsertionMode.Replace, HttpMethod = "GET" })) {
+        <div class="row" style="margin-bottom:15px;">
+            <div class="col-xs-2">@Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" })</div>
+            <div class="col-xs-3"><input type="text" id="q" name="q" class="form-control" placeholder="Search Term" data-autocomplete-source="@Url.Action("UserSearch", "UsersAdmin")" style="width:100%" /></div>
+            <div class="col-xs-3">
+                <label style="font-weight:normal" class="radio-inline"><input type="radio" name="filterType" id="filterType" value="Email" checked> Email</label>
+                <label style="font-weight:normal" class="radio-inline"><input type="radio" name="filterType" id="filterType" value="CommanderName"> Name</label>
+            </div>
+            <div class="col-xs-2"><input type="submit" id="Search" value="Search" class="btn btn-default" style="width:100%" /></div>
+            <div class="col-xs-2"></div>
+        </div>
+    }
+
+
+    <div id="List"></div>
+</div>

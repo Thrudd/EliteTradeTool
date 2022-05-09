@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "Find Trades";
+    Layout = null;
+}
+<hr />
+<p>This page helps to find trade routes between systems within the search radius. Prices change frequently so please pay attention to the last time the data was updated.</p>
+
+<p>Begin by typing in the start of the name of the system you are in and selecting it from the suggested systems then set your other criteria.<br />
+    <strong>The system will return commodities that have been updated in the last 48 hours.</strong></p>
+<p>This iteration is a temporary solution while I keep working on improvements, I just wanted to get this back up on the site ASAP as I know how useful you all find it. :)</p>
+<h4 style="color: #EF4023;">Recent Changes:</h4>
+<p><strong>
+    The minimum profit constraint has been removed it now searches for any trade with goods having a galactic average over 1500cr.<br />
+    Results are limited to the top 100 then filtered by the max trip distance you set (I'm looking into adding paging later)<br />
+</strong></p>
+<hr />
+<form class="form-horizontal" id="FindTradesForm" action="javascript:void(0);">
+    <div class="form-group">
+        @Html.Label("CurrentLocation", "Current Location", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("CurrentLocation", null, new { id = "CurrentLocation", @class = "form-control typeahead systemList", placeholder = "Current Location", data_link = "LastSystemName", required="required" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("SearchRange", "Search Range Box", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <label>
+                @Html.RadioButton("SearchRange", 0, true, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">0 ly</span>
+            </label>
+            <label>
+                @Html.RadioButton("SearchRange", 20.0, true, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">20 ly</span>
+            </label>
+            <label>
+                @Html.RadioButton("SearchRange", 30.0, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">30 ly</span>
+            </label>
+            <label>
+                @Html.RadioButton("SearchRange", 40.0, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">40 ly</span>
+            </label>
+            @*<label>
+                @Html.RadioButton("SearchRange", 60.0, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">60 ly</span>
+            </label>*@
+        </div>
+    </div>
+    @*<div class="form-group">
+        @Html.Label("MinProfitPerTon", "Min Profit Per Ton", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("MinProfitPerTon", 800, new { id = "MinProfitPerTon", @class = "form-control numbersOnly", required = "required" })
+        </div>
+    </div>*@
+    <div class="form-group">
+        @Html.Label("MaxDistanceFromJumpIn", "Max Distance To Station", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("MaxDistanceFromJumpIn", 1000, new { id = "MaxDistanceFromJumpIn", @class = "form-control floatOnly MaxDistanceFromJumpIn", style = "display:inline-block;width:120px", data_link = "MaxDistanceFromJumpIn", required = "required" }) (In ls)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("MaxDistanceBetweenSystems", "Max Distance Between Systems", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("MaxDistanceBetweenSystems", 50, new { id = "MaxDistanceBetweenSystems", @class = "form-control numbersOnly", style = "display:inline-block;width:120px", data_link = "MaxDistanceBetweenSystems", required = "required" }) (In ly)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("ExcludeOutposts", "Exclude Outposts", new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            <label style="padding-top: 5px;">
+                @Html.CheckBox("ExcludeOutposts", new { data_link = "ExcludeOutposts" })
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("ExcludePlanets", "Exclude Surface Ports", new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            <label style="padding-top: 5px;">
+                @Html.CheckBox("ExcludePlanets", new { data_link = "ExcludePlanets" })
+            </label>
+        </div>
+    </div>
+
+    @*<div class="form-group">
+        @Html.Label("Bidirectional", "Route Type", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <label>
+                @Html.RadioButton("Bidirectional", false , new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">One Way</span>
+            </label>
+            <label>
+                @Html.RadioButton("Bidirectional", true , true, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">Bidirectional</span>
+            </label>
+        </div>
+    </div>*@
+    <button type="submit" id="SearchBtn" class="btn btn-default col-md-offset-2"><i class="fa fa-calculator"></i> Search</button> <span id="FindTradesSpinner" class="hidden"> <img src="~/Content/images/ajax-loader.gif" /> Searching</span>
+</form>
+
+<div id="FindTradesListing" class="hidden"></div>
+<div id="FindTradesStationData" class="hidden" style="margin-top:10px;"></div>
+
+<script id="FindTradesListingTemplate" type="text/x-jsrender">
+    <hr style="margin-top:10px;" />
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped" id="FindTradesTable">
+                <thead>
+                    <tr>
+                        <th>Trade</th>
+                        <th class="sortable">Distance</th>
+                        <th class="sortable">Total Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {^{for Results}}
+                    <tr id="Row{{:#index}}" class="resultRow">
+                        <td>
+                            <div class="Outgoing">
+                                <a data-ajax="true" data-ajax-begin="ShowFindTradesSpinner" data-ajax-mode="replace" data-ajax-success="ShowStationData" data-ajax-update="#FindTradesStationData" href="/Main/StationDetails/{{:SourceStationId}}">{{:Source}}</a> {{:SourceStationDistance }}ls {{:OutgoingCommodityName }}  &rarr;
+                                <a data-ajax="true" data-ajax-begin="ShowFindTradesSpinner" data-ajax-mode="replace" data-ajax-success="ShowStationData" data-ajax-update="#FindTradesStationData" href="/Main/StationDetails/{{:DestinationStationId}}">{{:Destination}}</a> {{:DestinationStationDistance }}ls<br />
+                                <div>Buy: {{:OutgoingBuy}} ({{:OutgoingBuyLastUpdate}})</div>
+                                <div>Sell: {{:OutgoingSell}} ({{:OutgoingSellLastUpdate}})</div>
+                                <div>Profit: {{:OutgoingProfit}}</div>
+                                {{if !ReturningProfit > 0}}
+                                <a href="javascript:FindHighestTradeCommodity('#Row{{:#getIndex()}}',{{:DestinationStationId}},{{:SourceStationId}})" class="ReturningLink"><i class="fa fa-reply"></i> Find Return Commodity</a>
+                                {{/if}}
+                            </div>
+                            {{if ReturningProfit > 0}}
+                            <div style="margin-top:10px;">
+                                <a data-ajax="true" data-ajax-begin="ShowFindTradesSpinner" data-ajax-mode="replace" data-ajax-success="ShowStationData" data-ajax-update="#FindTradesStationData" href="/Main/StationDetails/{{:DestinationStationId}}">{{:Destination}}</a> {{:DestinationStationDistance }}ls {{:ReturningCommodityName }} &rarr;
+                                <a data-ajax="true" data-ajax-begin="ShowFindTradesSpinner" data-ajax-mode="replace" data-ajax-success="ShowStationData" data-ajax-update="#FindTradesStationData" href="/Main/StationDetails/{{:SourceStationId}}">{{:Source}}</a> {{:SourceStationDistance }}ls
+                                <div>Buy: {{:ReturningBuy}} ({{:ReturningBuyLastUpdate}})</div>
+                                <div>Sell: {{:ReturningSell}} ({{:ReturningSellLastUpdate}})</div>
+                                <div>Profit: {{:ReturningProfit}}</div>
+                            </div>
+                            {{/if}}
+                        </td>
+                        <td>{{:Distance}}</td>
+                        <td class="profit">{{:TotalProfit}}</td>
+                    </tr>
+                    {{/for}}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</script>
+
+<script id="FindTradesReturningTemplate" type="text/x-jsrender">
+    <div style="margin-top:10px;">
+        <a data-ajax="true" data-ajax-begin="ShowFindTradesSpinner" data-ajax-mode="replace" data-ajax-success="ShowStationData" data-ajax-update="#FindTradesStationData" href="/Main/StationDetails/{{:SourceStationId}}">{{:Source}}</a> {{:SourceStationDistance }}ls {{:CommodityName }} &rarr;
+        <a data-ajax="true" data-ajax-begin="ShowFindTradesSpinner" data-ajax-mode="replace" data-ajax-success="ShowStationData" data-ajax-update="#FindTradesStationData" href="/Main/StationDetails/{{:DestinationStationId}}">{{:Destination}}</a> {{:DestinationStationDistance }}ls
+        <div>Buy: {{:Buy}} ({{:BuyLastUpdate}})</div>
+        <div>Sell: {{:Sell}} ({{:SellLastUpdate}})</div>
+    </div>
+</script>
+
+<script>
+    $(document).ready(function () {
+        SetUpFindTrades();
+    });
+</script>

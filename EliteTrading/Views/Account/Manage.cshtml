@@ -1,0 +1,178 @@
+﻿@using EliteTrading.Models.ViewModels;
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = ViewBag.User.CommanderName + "'s Profile";
+}
+
+<div id="ContentContainer">
+    <h2>@ViewBag.Title</h2>
+
+    <h3>Rank: @(((EliteTrading.Entities.ApplicationUser)ViewBag.User).Title)</h3>
+    <img id="Badge" src="/Content/images/@(((EliteTrading.Entities.ApplicationUser)ViewBag.User).Badge)" />
+    <div id="ReputationReadout">
+        <p style="min-height:130px">
+            Current Reputation: @(((EliteTrading.Entities.ApplicationUser)ViewBag.User).Reputation)<br />
+            @*Reputation Needed for next Rank: @(((EliteTrading.Entities.ApplicationUser)ViewBag.User).ReputationNeeded)<br />*@
+            Updates: @(((EliteTrading.Entities.ApplicationUser)ViewBag.User).Updates)<br />
+            Queries: @(((EliteTrading.Entities.ApplicationUser)ViewBag.User).Queries)
+        </p>
+    </div>
+        @if (User.IsInRole("Mostly Harmless")) {
+            <h4>Earned Abilities</h4>
+        }
+        <ul>
+            @if (User.IsInRole("Elite")) {
+                <li><span>Full access to all features. Not available to users.</span></li>             
+            }
+            @if (User.IsInRole("Deadly")) {
+                @:
+                <li>
+                    <span>Just a cool title for now.</span>
+                </li>
+            }
+            @if (User.IsInRole("Dangerous")) {
+                @:
+                <li>
+                    <span>Just a cool title. :)</span>
+                </li>
+            }
+            @if (User.IsInRole("Master")) {
+                @:
+                <li>
+                    <span>Add/edit systems &amp; stations in the @Html.ActionLink("Admin Editor", "Index", "Admin", null, new { })</span>
+                </li>
+            }
+            @if (User.IsInRole("Expert")) {
+                @:
+                <li>
+                    <span>Delete station commodities<br />
+                    In the @Html.ActionLink("Admin Editor", "Index", "Admin", null, new { }) click 'Delete' link in the far right column.</span>
+                </li>
+                <li>
+                    <span>Add all missing commodities to a station<br />
+                    In the @Html.ActionLink("Admin Editor", "Index", "Admin", null, new { }) click the 'Add all commodities' button at the top of the listing.</span>
+                </li>
+            }
+            @if (User.IsInRole("Competent")) {
+                @:
+                <li>
+                    <span>Add station commodities<br />
+                    In the @Html.ActionLink("Admin Editor", "Index", "Admin", null, new { }) click either of the 'Add' buttons at the top of the list then fill in the values.
+                    Import CSV data to update <strong>existing</strong> stations.<br />
+                    Click the @Html.ActionLink("Import", "Import", "Admin", null, new { }) link at the top of the page, select the csv file you've generated and click parse.</span>
+                </li>
+            }
+            @if (User.IsInRole("Novice")) {
+                @:
+                <li><span>Can confirm prices<br />In the @Html.ActionLink("Admin Editor", "Index", "Admin", null, new { }). Click 'Confirm' link in the far right column.</span></li>
+            }
+            @if (User.IsInRole("Mostly Harmless")) {
+                @:
+                <li>
+                    <span>Edit prices<br />
+                    In the @Html.ActionLink("Admin Editor", "Index", "Admin", null, new { }) use the filter at the top of the page to find the station then simply correct the values in the listing below.</span>
+                </li>
+            }
+        </ul>
+
+
+    <p style="clear:both;padding-top:10px;">Reputation awards are given for:</p>
+    <ul>
+        <li><span>Making a trade query</span></li>
+        <li><span>Confirming prices in the Station Commodities editor</span></li>
+        <li><span>Correcting prices in the Station Commodities editor</span></li>
+        <li><span>Uploading CSV commodity data.</span></li>
+        <li><span>Uploading commodity data via the EDDN.</span></li>
+        <li><span>Adding a missing Commodity to a Station</span></li>
+        <li><span>Adding or editing a Commodity thats new to the game or otherwise incorrect</span></li>
+        <li><span>Adding or editing a System or Station</span></li>
+    </ul>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Rep</th>
+                <th>Benefits</th>
+                <th>Suggestions To Achieve</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Elite</td>
+                <td>n/a</td>
+                <td>Admin features.</td>
+                <td>Not achievable</td>
+            </tr>
+            <tr>
+                <td>Deadly</td>
+                <td>16000</td>
+                <td>Delete stations.</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Dangerous</td>
+                <td>8000</td>
+                <td>It's a cool title. No other benefits. :)</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Master</td>
+                <td>4000</td>
+                <td>Add/edit systems &amp; stations.</td>
+                <td>Import another seven stations worth of data.</td>
+            </tr>
+            <tr>
+                <td>Expert</td>
+                <td>2000</td>
+                <td>Delete incorrect station commodities &amp; add all missing commodities to a station shortcut.</td>
+                <td>Import six stations worth of data from CSV.</td>
+            </tr>
+            <tr>
+                <td>Competent</td>
+                <td>250</td>
+                <td>Add station commodities &amp; use the CSV import feature to update <strong>existing</strong> stations.</td>
+                <td>Update prices in about five stations.</td>
+            </tr>
+            <tr>
+                <td>Novice</td>
+                <td>50</td>
+                <td>Can manually confirm all prices in a station at once.</td>
+                <td>Update a station or two.</td>
+            </tr>
+            <tr>
+                <td>Mostly Harmless</td>
+                <td>25</td>
+                <td>Manually edit &amp; confirm prices.</td>
+                <td>25 queries, won't take long to achieve. :)</td>
+            </tr>
+            <tr>
+                <td>Harmless</td>
+                <td>0</td>
+                <td>Nothing special, you can query the data using the forms on the main page.</td>
+                <td>Make an account.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr />
+
+
+    <p class="text-success">@ViewBag.StatusMessage</p>
+    <div class="row">
+        <div class="col-md-12">
+            @if (ViewBag.HasLocalPassword) {
+                @Html.Partial("_ChangePasswordPartial")
+            } else {
+                @Html.Partial("_SetPasswordPartial")
+            }
+
+            <section id="externalLogins">
+                @Html.Action("RemoveAccountList")
+                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
+            </section>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

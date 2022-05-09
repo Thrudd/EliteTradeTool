@@ -1,0 +1,18 @@
+﻿@model List<EliteTrading.Entities.ApplicationUser>
+
+@{
+    ViewBag.Title = "Contributors";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (EliteTrading.Entities.ApplicationUser cmdr in Model) { 
+    <div>
+        <img src="~/Content/images/@(cmdr.Badge)" class="miniBadge" />
+        <p><strong>@(cmdr.CommanderName) - @(cmdr.Title)</strong><br />
+        Reputation:@(cmdr.Reputation) Updates:@(cmdr.Updates)</p>
+    </div>
+    
+}

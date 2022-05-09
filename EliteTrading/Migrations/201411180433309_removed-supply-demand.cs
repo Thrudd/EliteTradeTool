@@ -1,0 +1,19 @@
+namespace EliteTrading.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class removedsupplydemand : DbMigration
+    {
+        public override void Up()
+        {
+           
+            
+        }
+        
+        public override void Down()
+        {
+         
+        }
+    }
+}

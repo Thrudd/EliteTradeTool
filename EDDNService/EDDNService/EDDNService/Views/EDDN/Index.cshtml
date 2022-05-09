@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "EDDN Monitor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="ContentContainer" style="min-height:500px;">
+    <h2>@ViewBag.Title</h2>
+
+    <p>Connected: <strong data-bind="text: Connected"></strong></p>
+    <p>Thread: <strong data-bind="text: Status"></strong></p>
+    <button id="StartStop" class="btn btn-default" data-bind="click: StartStop"><span data-bind="text: StartStopLabel"></span></button>
+
+
+    <div id="Log">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>Id</td>
+                    <td>TimeStamp</td>
+                    <td>Action</td>
+                    <td>Message</td>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: Log, visible: Log().length > 0">
+                <tr>
+                    <td data-bind="text: Id"></td>
+                    <td data-bind="text: TimeStamp"></td>
+                    <td data-bind="text: Action"></td>
+                    <td data-bind="text: Message"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-3.3.0.js"></script>
+    <script>
+
+    ko.applyBindings(new EDDNViewModel());
+
+    function Log(data) {
+        this.Id = ko.observable(data.Id);
+        this.TimeStamp = ko.observable(data.TimeStamp);
+        this.Action = ko.observable(data.Action);
+        this.Message = ko.observable(data.Message);
+    }
+
+    function EDDNViewModel() {
+        // Data
+        var self = this;
+        self.Connected = ko.observable();
+        self.Status = ko.observable();
+        self.StartStopLabel = ko.observable();
+        self.Log = ko.observableArray([]);
+
+        // Operations
+        self.CheckConnected = function () {
+
+            $.ajax("/EDDN/EDDNStatus", {
+                type: "get",
+                contentType: "application/json",
+                success: function (data) {
+                    self.Connected(data.Connected);
+                    if (self.Connected()==true) {
+                        self.StartStopLabel("Stop");
+                    } else {
+                        self.StartStopLabel("Start");
+                    }
+                    self.Status(data.Status);
+                }
+            });
+
+        };
+        self.StartStop = function () {
+            newState = self.Connected() == true ? false : true;
+
+            $.ajax("/EDDN/EDDN", {
+                data: ko.toJSON({ start: newState }),
+                type: "post", contentType: "application/json",
+                success: self.CheckConnected
+            });
+        };
+
+        self.GetLog = function () {
+
+
+            $.ajax("/EDDN/EDDNLog", {
+                type: "get",
+                contentType: "application/json",
+                success: function (allData) {
+                    var mappedTasks = $.map(allData, function (item) { return new Log(item) });
+                    self.Log(mappedTasks);
+                }
+            });
+
+        }
+        setInterval(self.CheckConnected, 2000);
+        setInterval(self.GetLog, 10000);
+        self.CheckConnected();
+        self.GetLog();
+    }
+
+
+
+
+    </script>
+
+}

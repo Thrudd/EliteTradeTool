@@ -1,0 +1,200 @@
+﻿@{
+    ViewBag.Title = "Data Lists";
+    Layout = ViewBag.Layout;
+}
+<hr />
+<p>You can use this page to look up pricing data across the galaxy and to query particular systems. Simply choose the type of search you want to do then either select the commodity and your current location or type in the name of the system you're interested in.</p>
+<form class="form-horizontal" id="DataListsForm" action="javascript:void(0);">
+    <div class="form-group">
+        <label for="SearchType" class="control-label col-md-2" style="padding-top:0px">Search Type</label>
+        <div class="col-md-10">
+            <label>
+                @Html.RadioButton("QueryType", "System", new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">System</span>
+            </label>
+            <label>
+                @Html.RadioButton("QueryType", "StationBuys", new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">I Want To Sell Commodity</span>
+            </label>
+            <label>
+                @Html.RadioButton("QueryType", "StationSells", new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">I Want To Buy Commodity</span>
+            </label>
+        </div>
+    </div>
+    <div class="form-group hidden" id="SystemGroup">
+        @Html.Label("SystemName", "System", new { id = "SystemLabel", @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("SystemName", null, new { id = "SystemName", @class = "form-control typeahead systemList", placeholder = "System Name", data_link = "LastSystemName", style = "display:inline-block", required = "required" })
+        </div>
+    </div>
+
+    <div class="hidden" id="CommodityGroup">
+        <div class="form-group">
+            @Html.Label("CommodityId", "Commodity", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CommodityId", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("SearchRange", "Max Range", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBox("SearchRange", null, new { @class = "form-control", placeholder = "Optional" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("ExcludeOutposts", "Exclude Outposts", new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <label style="padding-top: 5px;">
+                    @Html.CheckBox("ExcludeOutposts", new { data_link = "ExcludeOutposts" })
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("ExcludePlanets", "Exclude Surface Ports", new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <label style="padding-top: 5px;">
+                    @Html.CheckBox("ExcludePlanets", new { data_link = "ExcludePlanets" })
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group hidden" id="SubmitGroup">
+        <div class="col-md-10 col-md-offset-2">
+            <input type="submit" value="Query" class="btn btn-default" />
+        </div>
+    </div>
+    
+</form>
+
+<div class="form-group">
+    <div id="DataSpinner" class="hidden col-md-offset-2"> <img src="~/Content/images/ajax-loader.gif" /> Searching</div>
+</div>
+
+<div id="DataListing" class="hidden"></div>
+
+<script id="SystemOverviewTemplate" type="text/x-jsrender">
+    <hr />
+    {{if System ne= "null" }}
+    <h2>{{:System.Name}}<br /></h2>
+
+    {{if System.Stations.length > 0 }}
+        {{for System.Stations }}
+            <h3 style="margin-bottom:0px;color:#ef4023"><img src="/content/images/{{:StationTypeIcon}}.png" style="margin-right:5px;position:relative;top:-3px" />{{if CommodityCategories.length > 0 }}<a href="#Station{{:#getIndex()}}">{{/if}}{{:Name}}{{if CommodityCategories.length > 0 }}</a>{{/if}}<br />            
+            <span style="font-size:12pt;color:#fff">{{if FactionName != null }}{{:FactionName}}<br />{{/if}}{{:Allegiance}} {{:Government}} {{:Economy}}</span></h3>
+            <p style="padding-left:20px">
+                <strong>Distance From Jump In:</strong> {{:DistanceFromJumpIn}}ls<br />
+                <strong>Services:</strong> {{:Services}}<br />
+                <strong>Installation Type:</strong> {{:StationType}}<br />
+                <strong>Landing Pads:</strong> {{:Pads}}
+            </p>
+        {{/for}}
+        <hr />
+        {{for System.Stations }}
+        {{if CommodityCategories.length > 0 }}
+            <div id="Station{{:#parent.index}}" style="margin-bottom: 80px;"></div>
+            <h3 style="margin-bottom:0px;color:#ef4023">{{:Name}} <span style="font-size:12pt;color:#fff">{{:Allegiance}} {{:Government}} {{:Economy}}</span></h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Sell</th>
+                        <th>Demand</th>
+                        <th>Buy</th>
+                        <th>Supply</th>
+                        <th>Avg</th>
+                        <th>Last Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {{for CommodityCategories}}
+                    <tr><td colspan="7"><h4 style="margin-bottom:0px;margin-left:0px;">{{:Name}}</h4></td></tr>
+
+                    {{for Commodities}}
+                    <tr>
+                        <td style="padding-left:30px;">{{:Name}}</td>
+                        <td>{{:Sell}}</td>
+                        <td>{{:Demand}} {{if DemandAmount > "0"}} {{:DemandAmount}} {{/if}}</td>
+                        <td>{{:Buy}}</td>
+                        <td>{{:Supply}} {{if SupplyAmount > "0"}} {{:SupplyAmount}} {{/if}}</td>
+                        <td>{{:AveragePrice}}</td>
+                        <td><a title="Updated by CMDR {{:LastUpdatedBy}}" class="updateInfo">{{:LastUpdate}}</a></td>
+                    </tr>
+                    {{/for}}
+
+                {{/for}}
+                </tbody>
+            </table>
+            {{/if}}
+        {{/for}}
+    {{else}}
+        <p>No stations in the database.</p>
+    {{/if}}
+    {{else}}
+    <p>System not found in the database.</p>
+    {{/if}}
+</script>
+
+<script id="WantHaveTemplate" type="text/x-jsrender">
+    <hr />
+    {{if CommodityList.length > 0 }}
+    <table class="table table-striped" id="DataListTable">
+        <thead>
+            <tr>
+                <th class="sortable">Distance</th>
+                <th></th>
+                <th class="sortable">Location</th>
+                {{if QueryType == 1}}
+                <th class="sortable">Sell</th>
+                <th class="sortable">Demand</th>
+                {{/if}}
+                {{if QueryType == 2}}
+                <th class="sortable">Buy</th>
+                <th class="sortable">Supply</th>
+                {{/if}}
+                <th class="sortable">Amount</th>
+                <th>Avg</th>
+                <th>Last Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{for CommodityList}}
+            <tr>
+                <td>{{:Distance}}</td>
+                <td>
+                    <div class="iconBlock">
+                        <img src="/Content/images/{{:StationTypeIcon}}.png" title="{{:StationTypeName}}" />
+                        {{if StationAllegiance !="Independent" }}
+                        <img src="/Content/images/{{:StationAllegiance}}.png" title="{{:StationAllegiance}}" />
+                        {{/if}}
+                        {{if PermitRequired > 0}}<img src="/Content/images/Permit.png" title="Permit Required" /> {{/if}}
+                    </div>
+                </td>
+                <td>{{:Location}} ({{:DistanceFromJumpIn}}ls)</td>
+                {{if ~root.QueryType == 1}}
+                <td>{{:Sell}}</td>
+                <td>{{:Demand}}</td>
+                <td>{{:DemandAmount}}</td>
+                {{/if}}
+                {{if ~root.QueryType == 2}}
+                <td>{{:Buy}}</td>
+                <td>{{:Supply}}</td>
+                <td>{{:SupplyAmount}}</td>
+                {{/if}}
+                <td>{{:GalacticAveragePrice}}</td>
+                <td><a title="Updated by CMDR {{:LastUpdatedBy}}" class="updateInfo">{{:LastUpdate}}</a></td>
+            </tr>
+            {{/for}}
+        </tbody>
+    </table>
+    {{else}}
+    <p>No results returned.</p>
+    {{/if}}
+</script>
+
+<script>
+    $(document).ready(function () {
+        SetupDataLists();
+    });
+</script>

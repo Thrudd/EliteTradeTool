@@ -1,0 +1,339 @@
+﻿@model EliteTrading.Models.Search.SearchQueryViewModel
+@using EliteTrading.Extensions
+@using EliteTrading.Models.ViewModels
+@{
+    ViewBag.Title = "Find Nearest";
+    Layout = null;
+}
+
+
+<form class="form-horizontal" id="SearchForm">
+    <hr />
+    <p>Use this page to find services and commodities, it's really useful for mission running. Select the filters you wish to apply to your search then click the search button. Clicking on a station name in the results will show you what is available at that station.</p>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.SearchType, "Search Filter", htmlAttributes: new { @class = "control-label col-md-2", style="padding-top:12px" })
+        <div class="col-md-10">
+            <div class="form-control-static">
+                <label style="margin-right:10px;">
+                    @Html.CheckBoxFor(m => m.Commodity) Commodity
+                </label>
+                <label style="margin-right:10px;">
+                    @Html.CheckBox("Services") Station Services
+                </label>
+                <label style="margin-right:10px;">
+                    @Html.CheckBox("Faction") Faction Name
+                </label>
+                <label style="margin-right:10px;">
+                    @Html.CheckBox("Allegiance") Allegiance
+                </label>
+                <label style="margin-right:10px;">
+                    @Html.CheckBox("Government") Government
+                </label>
+                <label style="margin-right:10px;">
+                    @Html.CheckBox("Economy") Economy
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group hidden" id="ServicesSelector">
+        @Html.Label("Services", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <label style="margin-right:10px;">
+                @Html.CheckBoxFor(m => m.Blackmarket) Blackmarket
+            </label>
+            <label style="margin-right:10px;">
+                @Html.CheckBoxFor(m => m.Outfitting) Outfitting
+            </label>
+            <label style="margin-right:10px;">
+                @Html.CheckBoxFor(m => m.Shipyard) Shipyard
+            </label>
+            <label style="margin-right:10px;">
+                @Html.CheckBoxFor(m => m.Repairs) Repairs
+            </label>
+            <label style="margin-right:10px;">
+                @Html.CheckBoxFor(m => m.Refuel) Refuel
+            </label>
+            <label style="margin-right:10px;">
+                @Html.CheckBoxFor(m => m.Rearm) Rearm
+            </label>
+        </div>
+    </div>
+
+    
+    <div class="form-group hidden" id="FactionSelector">
+        @Html.LabelFor(m => m.FactionName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("FactionName", null, new { id = "FactionName", @class = "form-control", placeholder = "Faction Name" })
+        </div>
+    </div>
+
+    <div class="form-group hidden" id="CommodityBuySell">
+        @Html.LabelFor(m => m.SearchType, "Commodity Buy/Sell", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @foreach (var searchType in Model.SearchTypes) {
+                @Html.RadioButtonFor(m => m.SearchType, searchType, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">@(searchType)</span>
+            }
+        </div>
+    </div>
+
+    <div class="form-group hidden" id="CommoditySelector">
+        @Html.LabelFor(m => m.CommodityId, "Commodity", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.CommodityId, Model.Commodities, null, new { @class = "form-control", style = "display:inline-block" })
+        </div>
+    </div>
+
+    <div class="form-group hidden" id="AllegianceSelector">
+        @Html.LabelFor(model => model.AllegianceId, "Allegiance", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.AllegianceId, Model.Allegiances, null, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group hidden" id="GovernmentSelector">
+        @Html.LabelFor(model => model.GovernmentId, "Government", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.GovernmentId, Model.Governments, null, new { @class = "form-control" })
+        </div>
+    </div>
+    
+    <div class="form-group hidden" id="EconomySelector">
+        @Html.LabelFor(model => model.EconomyId, "Economy", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.EconomyId, Model.Economies, null, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("CurrentLocation", "Current Location", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBox("CurrentLocation", null, new { id = "CurrentLocation", @class = "form-control typeahead systemList", placeholder = "Current Location", data_link = "LastSystemName" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("SearchRange", "Search Range Box", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <label>
+                @Html.RadioButton("SearchRange", 15.0, true, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">15 ly</span>
+            </label>
+            <label>
+                @Html.RadioButton("SearchRange", 25.0, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">25 ly</span>
+            </label>
+            <label>
+                @Html.RadioButton("SearchRange", 50.0, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">50 ly</span>
+            </label>
+            <label>
+                @Html.RadioButton("SearchRange", 100.0, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">100 ly</span>
+            </label>
+            <label>
+                @Html.RadioButton("SearchRange", 150.0, new { @class = "radio-inline" }) <span class="form-control-static" style="margin-right:10px;">150 ly</span>
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("ExcludeOutposts", "Exclude Outposts", new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            <label style="padding-top: 5px;">
+                @Html.CheckBox("ExcludeOutposts", new { data_link = "ExcludeOutposts" })
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("ExcludePlanets", "Exclude Surface Ports", new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            <label style="padding-top: 5px;">
+                @Html.CheckBox("ExcludePlanets", new { data_link = "ExcludePlanets" })
+            </label>
+        </div>
+    </div>
+
+    <a id="SearchBtn" href="#" class="btn btn-default col-md-offset-2 hidden"><i class="fa fa-calculator"></i> Search</a> <span id="SearchSpinner" class="hidden"> <img src="~/Content/images/ajax-loader.gif" /> Searching</span>
+@*}*@
+</form>
+
+<div id="SearchListing" class="hidden"></div>
+<div id="SearchStationData" class="hidden"></div>
+
+@Scripts.Render("~/bundles/jqueryval")
+
+<script id="SearchTemplate" type="text/x-jsrender">
+    <hr />
+    <h3 style="margin-left:5px;">Search Results</h3>
+
+    <table class="table table-striped" id="SearchResultTable">
+        <thead>
+            <tr>
+                <th></th>
+                <th class="sortable">Name</th>
+                {{if ~root.Query.SearchType == "Station Buying" || ~root.Query.SearchType == "Station Selling" }}
+                <th class="sortable">Price</th>
+                {{if ~root.Query.SearchType == "Station Selling" }}
+                <th>Supply</th>
+                {{else ~root.Query.SearchType == "Station Buying" }}
+                <th>Demand</th>
+                {{/if}}
+                <th class="sortable">Last Update</th>
+                {{/if}}
+                <th class="sortable">Distance</th>
+                <th class="sortable">Blackmarket</th>
+                <th class="sortable">Commodities</th>
+                <th class="sortable">Outfitting</th>
+                <th class="sortable">Shipyard</th>
+                <th class="sortable">Repairs</th>
+                <th class="sortable">Refuel</th>
+                <th class="sortable">Rearm</th>
+            </tr>
+        </thead>
+        <tbody>
+            {^{for Results}}
+            <tr id="Row{{:#index}}" class="resultRow">
+                <td>
+                    <div class="iconColumn">
+                        <img src="/Content/images/{{:Station.StationType.Icon}}.png" title="{{:Station.StationType.Name}}" />
+                        {{if Station.Allegiance.Name !="Independent" }}
+                        <img src="/Content/images/{{:Station.Allegiance.Name}}.png" title="{{:Station.Allegiance.Name}}" />
+                        {{/if}}
+                        {{if PermitRequired > 0}}<img src="/Content/images/Permit.png" title="Permit Required" /> {{/if}}
+                    </div>
+                </td>
+                <td>
+                    <a data-ajax="true" data-ajax-begin="ShowSearchSpinner" data-ajax-mode="replace" data-ajax-success="ShowStationData" data-ajax-update="#SearchStationData" href="/Main/StationDetails/{{:Station.Id}}">{{:System.Name}} ({{:Station.Name}})</a>{{if Station.DistanceFromJumpIn>0}} {{:Station.DistanceFromJumpIn }}ls {{/if}}<br />
+                    {{if Station.FactionName.length gt 0}}{{:Station.FactionName}}<br />{{/if}}
+                    {{:Station.Allegiance.Name}} {{:Station.Government.Name}} {{:EconomyString}}
+                </td>
+                {{if ~root.Query.SearchType == "Station Selling" }}
+                <td>{{:Buy}}</td>
+                <td>{{if SupplyAmount ne=0}} {{:Supply}} {{:SupplyAmount}} {{else}} Unknown {{/if}}</td>
+                {{else ~root.Query.SearchType == "Station Buying" }}
+                <td>{{:Sell}}</td>
+                <td>{{if DemandAmount ne=0}} {{:Demand}} {{:DemandAmount}} {{else}} Unknown {{/if}}</td>
+                {{/if}}
+                {{if ~root.Query.SearchType == "Station Buying" || ~root.Query.SearchType == "Station Selling" }}
+                <td>{{:LastUpdate}}</td>
+                {{/if}}
+                <td>{{:Distance}}</td>
+                <td>
+                    {{if Station.HasBlackmarket }}
+                    <i class="fa fa-check"></i>
+                    {{else}}
+                    <i class="fa fa fa-times"></i>
+                    {{/if}}
+                </td>
+                <td>
+                    {{if Station.HasMarket }}
+                    <i class="fa fa-check"></i>
+                    {{else}}
+                    <i class="fa fa-times"></i>
+                    {{/if}}
+                </td>
+                <td>
+                    {{if Station.HasOutfitting }}
+                    <i class="fa fa-check"></i>
+                    {{else}}
+                    <i class="fa fa-times"></i>
+                    {{/if}}
+                </td>
+                <td>
+                    {{if Station.HasShipyard }}
+                    <i class="fa fa-check"></i>
+                    {{else}}
+                    <i class="fa fa-times"></i>
+                    {{/if}}
+                </td>
+                <td>
+                    {{if Station.HasRepairs }}
+                    <i class="fa fa-check"></i>
+                    {{else}}
+                    <i class="fa fa-times"></i>
+                    {{/if}}
+                </td>
+                <td>
+                    {{if Station.HasRefuel }}
+                    <i class="fa fa-check"></i>
+                    {{else}}
+                    <i class="fa fa-times"></i>
+                    {{/if}}
+                </td>
+                <td>
+                    {{if Station.HasRearm }}
+                    <i class="fa fa-check"></i>
+                    {{else}}
+                    <i class="fa fa-times"></i>
+                    {{/if}}
+                </td>
+            </tr>
+            {{/for}}
+        </tbody>
+    </table>
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        jQuery('.numbersOnly').numericInput();
+        jQuery('.floatOnly').numericInput({ allowFloat: true });
+
+        $("#SearchForm input[type=checkbox]").on("change", function (e) {
+            if ($('#SearchForm input[type=checkbox]:checked').length > 0) {
+                $('#SearchForm #SearchBtn').removeClass("hidden");
+            } else {
+                $('#SearchForm #SearchBtn').addClass("hidden");
+            }
+        });
+
+        $("input:checkbox[name='Services']").on("change", function (e) {
+            if ($(this).prop("checked")) {
+                $('#ServicesSelector').toggleClass("hidden");
+
+            } else {
+                $('#ServicesSelector').addClass("hidden");
+            }
+        });
+
+        $("input:checkbox[name='Faction']").on("change", function (e) {
+            if ($(this).prop("checked")) {
+                $('#FactionSelector').toggleClass("hidden");
+
+            } else {
+                $('#FactionSelector').addClass("hidden");
+            }
+        });
+
+        $("input:checkbox[name='Commodity']").on("change", function (e) {
+            if ($(this).prop("checked")) {
+                $('#CommodityBuySell').toggleClass("hidden");
+
+            } else {
+                $('#CommodityBuySell').addClass("hidden");
+                $('#CommoditySelector').addClass("hidden");
+                $('input[name="SearchType"]').prop('checked', false);
+            }
+        });
+
+        $("input:radio[name='SearchType']").on("change", function (e) {
+            if (($(this).val() == 'Station Buying') || ($(this).val() == 'Station Selling')) {
+                $('#CommoditySelector').removeClass("hidden");
+            } else {
+                $('#CommoditySelector').addClass("hidden");
+            }
+        });
+
+        $("input:checkbox[name='Allegiance']").on("change", function (e) {
+            $('#AllegianceSelector').toggleClass("hidden");
+        });
+
+        $("input:checkbox[name='Economy']").on("change", function (e) {
+            $('#EconomySelector').toggleClass("hidden");
+        });
+
+        $("input:checkbox[name='Government']").on("change", function (e) {
+            $('#GovernmentSelector').toggleClass("hidden");
+        });
+
+        $("#SearchForm #SearchBtn").on("click", NewSearch);
+    });
+</script>
